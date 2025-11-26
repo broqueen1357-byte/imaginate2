@@ -26,7 +26,7 @@ export default function Landing() {
 
         {/* MAIN BUTTON */}
         <button
-          onClick={() => navigate("/Imaginate")}
+          onClick={() => navigate("/imaginate")}
           className="px-10 py-4 bg-cyan-400 hover:bg-cyan-300 text-lg font-semibold rounded-xl shadow-xl transition"
         >
           Start Imaginating

@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import previewImg from "../assets/universe.png"; 
 
 export default function ThreeDResult() {
   const navigate = useNavigate();
@@ -18,22 +19,26 @@ export default function ThreeDResult() {
       </div>
 
       {/* MAIN AREA */}
-      <div style={{
-        display: "flex",
-        marginTop: "20px",
-        gap: "20px"
-      }}>
-        
+      <div
+        style={{
+          display: "flex",
+          marginTop: "20px",
+          gap: "20px"
+        }}
+      >
+
         {/* LEFT: 3D IMAGE */}
-        <div style={{
-          width: "60%",
-          height: "400px",
-          border: "1px solid"
-        }}>
-          {/* Replace with your 3D viewer */}
-          <p style={{ textAlign: "center", marginTop: "180px" }}>
-            3D Preview Area
-          </p>
+        <div
+          style={{
+            width: "60%",
+            height: "400px",
+            border: "1px solid",
+            backgroundColor: "#e3e3e3", 
+            backgroundImage: `url(${previewImg})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center"
+          }}
+        >
         </div>
 
         {/* RIGHT: CONTROLS */}
@@ -43,13 +48,15 @@ export default function ThreeDResult() {
           <div style={{ border: "1px solid", padding: "15px" }}>
             <h2>3D CONTROLS</h2>
 
-            <div style={{
-              border: "1px solid",
-              padding: "10px",
-              marginTop: "10px",
-              display: "flex",
-              justifyContent: "space-between"
-            }}>
+            <div
+              style={{
+                border: "1px solid",
+                padding: "10px",
+                marginTop: "10px",
+                display: "flex",
+                justifyContent: "space-between"
+              }}
+            >
               <span>ROTATE</span>
               <span>ZOOM</span>
               <span>LIGHTING</span>
@@ -64,7 +71,7 @@ export default function ThreeDResult() {
 
           {/* BOX 3 (NEXT) */}
           <div
-            onClick={() => navigate("/next-step")}
+            onClick={() => navigate("/imaginate/next-step")}
             style={{
               border: "1px solid",
               padding: "20px",

@@ -19,12 +19,15 @@ export default function App() {
           <Route index element={<Landing />} />
           <Route path="explore" element={<Explore />} />
           <Route path="about" element={<About />} />
-          <Route path="imaginate" element={<Imaginate />} />
           <Route path="login" element={<Login />} />
 
-          {/* NEW PAGES YOU ADDED */}
-          <Route path="3d-result" element={<ThreeDResult />} />
-          <Route path="next-step" element={<NextStep />} />
+          {/* Full-page routes */}
+          <Route path="imaginate" element={<Imaginate />} />
+          <Route path="imaginate/3d-result" element={<ThreeDResult />} />
+          <Route path="imaginate/next-step" element={<NextStep />} />
+
+          {/* Catch-all */}
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </Router>

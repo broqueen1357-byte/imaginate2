@@ -1,50 +1,143 @@
-import { useNavigate } from "react-router-dom";
-
 export default function NextStep() {
-  const navigate = useNavigate();
-
   return (
-    <div className="w-full min-h-screen flex items-center justify-center px-6 py-10">
-      <div className="w-full max-w-3xl p-6 rounded-xl border">
-        <h1 className="text-3xl font-semibold mb-6">
-          Next Step
+    <div
+      style={{
+        width: "100%",
+        minHeight: "100vh",
+        background: "radial-gradient(circle at top, #0a0f29, #000)",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: "20px"
+      }}
+    >
+      {/* FEEDBACK CARD */}
+      <div
+        style={{
+          width: "420px",
+          padding: "35px",
+          borderRadius: "25px",
+          background: "rgba(15, 20, 40, 0.85)",
+          boxShadow:
+            "0 0 25px rgba(80, 120, 255, 0.4), inset 0 0 25px rgba(80,120,255,0.2)",
+          border: "1px solid rgba(80,120,255,0.6)",
+          color: "#dbe3ff"
+        }}
+      >
+        {/* TITLE */}
+        <h1
+          style={{
+            fontSize: "28px",
+            marginBottom: "10px",
+            textAlign: "center",
+            fontWeight: "700"
+          }}
+        >
+          Your Voice Shapes Imaginate
         </h1>
 
-        <p className="text-base mb-6">
-          Continue refining your concept, modify the generated 3D model, or proceed with advanced tools.
-          Choose what you want to do next.
+        <p
+          style={{
+            textAlign: "center",
+            marginBottom: "30px",
+            color: "#8892b0"
+          }}
+        >
+          Tell us what you think — your feedback builds the future.
         </p>
 
-        <div className="grid gap-4">
-          <button
-            className="w-full py-3 rounded-lg border text-left px-4"
-            onClick={() => alert("Modify 3D Model coming soon")}
-          >
-            Modify 3D Model
-          </button>
+        {/* NAME */}
+        <input
+          type="text"
+          placeholder="Name"
+          style={{
+            width: "100%",
+            padding: "14px",
+            borderRadius: "12px",
+            background: "rgba(0,0,0,0.35)",
+            border: "1px solid rgba(80,120,255,0.4)",
+            color: "white",
+            marginBottom: "15px",
+            outline: "none"
+          }}
+        />
 
-          <button
-            className="w-full py-3 rounded-lg border text-left px-4"
-            onClick={() => alert("Add More Details coming soon")}
-          >
-            Add More Details
-          </button>
+        {/* EMAIL */}
+        <input
+          type="email"
+          placeholder="Email"
+          style={{
+            width: "100%",
+            padding: "14px",
+            borderRadius: "12px",
+            background: "rgba(0,0,0,0.35)",
+            border: "1px solid rgba(80,120,255,0.4)",
+            color: "white",
+            marginBottom: "15px",
+            outline: "none"
+          }}
+        />
 
-          <button
-            className="w-full py-3 rounded-lg border text-left px-4"
-            onClick={() => navigate("/imaginate/3d-result")}
-          >
-            Regenerate Concept
-          </button>
+        {/* FEEDBACK BOX */}
+        <textarea
+          placeholder="Feedback"
+          style={{
+            width: "100%",
+            padding: "14px",
+            height: "110px",
+            borderRadius: "12px",
+            background: "rgba(0,0,0,0.35)",
+            border: "1px solid rgba(80,120,255,0.4)",
+            color: "white",
+            marginBottom: "20px",
+            outline: "none",
+            resize: "none"
+          }}
+        />
 
-          <button
-            className="w-full py-3 rounded-lg border text-left px-4"
-            onClick={() => navigate("/imaginate")}
-          >
-            Go Back to Imaginate
-          </button>
+        {/* STAR RATING */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginBottom: "25px",
+            gap: "10px"
+          }}
+        >
+          {Array.from({ length: 5 }).map((_, i) => (
+            <span
+              key={i}
+              style={{
+                fontSize: "28px",
+                cursor: "pointer",
+                color: i < 4 ? "#4d7dff" : "#1a2750"
+              }}
+            >
+              ★
+            </span>
+          ))}
         </div>
+
+        {/* SUBMIT BUTTON */}
+        <button
+          style={{
+            width: "100%",
+            padding: "14px",
+            borderRadius: "12px",
+            background:
+              "linear-gradient(90deg, #3d6cff, #6f92ff)",
+            boxShadow: "0 0 20px rgba(80,120,255,0.5)",
+            color: "white",
+            fontSize: "18px",
+            fontWeight: "600",
+            border: "none",
+            cursor: "pointer"
+          }}
+        >
+          Submit Feedback
+        </button>
       </div>
     </div>
   );
 }
+

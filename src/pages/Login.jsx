@@ -1,61 +1,126 @@
 export default function Login() {
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-center bg-[#020617] relative px-6">
-
-      {/* Glow Title */}
-      <h1 className="text-5xl font-extrabold text-cyan-300 drop-shadow-[0_0_25px_#22d3ee] mb-10">
+    <div
+      style={{
+        width: "100%",
+        minHeight: "100vh",
+        background: "radial-gradient(circle at top, #071021, #000)",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        paddingTop: "70px",
+        color: "white",
+      }}
+    >
+      {/* IMAGINATE TITLE */}
+      <h1
+        style={{
+          fontSize: "48px",
+          fontWeight: "700",
+          marginBottom: "40px",
+          color: "#6ecbff",
+          textShadow: "0 0 25px #3db7ff",
+          letterSpacing: "2px",
+        }}
+      >
         IMAGINATE
       </h1>
 
-      {/* Login Card */}
+      {/* LOGIN CARD */}
       <div
-        className="
-          w-full max-w-md p-8 rounded-2xl border 
-          border-cyan-500/40 
-          bg-[#030b17]/60 
-          backdrop-blur-xl
-          shadow-[0_0_30px_#06b6d4]
-        "
+        style={{
+          width: "400px",
+          padding: "35px 30px",
+          borderRadius: "25px",
+          background: "rgba(10, 14, 30, 0.85)",
+          border: "1px solid rgba(80,180,255,0.55)",
+          boxShadow:
+            "0 0 25px rgba(80,180,255,0.4), inset 0 0 20px rgba(20,60,120,0.3)",
+        }}
       >
-        <h2 className="text-3xl font-semibold text-cyan-100 mb-6">Login</h2>
+        {/* LOGIN HEADING */}
+        <h2
+          style={{
+            marginBottom: "25px",
+            fontSize: "26px",
+            fontWeight: "600",
+          }}
+        >
+          Login
+        </h2>
 
-        {/* Email */}
+        {/* EMAIL INPUT */}
         <input
           type="email"
           placeholder="Email"
-          className="
-            w-full mb-4 p-3 rounded-lg bg-[#0a1525] border border-cyan-500/30 
-            text-cyan-100 placeholder-cyan-400
-            focus:outline-none focus:ring-2 focus:ring-cyan-400
-          "
+          style={{
+            width: "100%",
+            padding: "14px",
+            marginBottom: "15px",
+            borderRadius: "12px",
+            background: "rgba(0,0,0,0.35)",
+            border: "1px solid rgba(80,150,255,0.4)",
+            color: "white",
+            outline: "none",
+          }}
         />
 
-        {/* Password */}
+        {/* PASSWORD INPUT */}
         <input
           type="password"
           placeholder="Password"
-          className="
-            w-full mb-4 p-3 rounded-lg bg-[#0a1525] border border-cyan-500/30 
-            text-cyan-100 placeholder-cyan-400
-            focus:outline-none focus:ring-2 focus:ring-cyan-400
-          "
+          style={{
+            width: "100%",
+            padding: "14px",
+            marginBottom: "12px",
+            borderRadius: "12px",
+            background: "rgba(0,0,0,0.35)",
+            border: "1px solid rgba(80,150,255,0.4)",
+            color: "white",
+            outline: "none",
+          }}
         />
 
-        {/* Remember Me */}
-        <label className="flex items-center gap-2 mb-6 text-cyan-200">
-          <input type="checkbox" className="accent-cyan-400 scale-110" />
-          Remember me
-        </label>
+        {/* REMEMBER ME */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            marginBottom: "25px",
+          }}
+        >
+          <input
+            type="checkbox"
+            style={{
+              width: "18px",
+              height: "18px",
+              accentColor: "#5cbcff",
+              cursor: "pointer",
+            }}
+          />
+          <span style={{ fontSize: "15px", color: "#a8b8ff" }}>
+            Remember me
+          </span>
+        </div>
 
-        {/* Login Button */}
+        {/* LOGIN BUTTON */}
         <button
-          className="
-            w-full py-3 rounded-xl font-semibold text-lg
-            bg-cyan-400 text-[#012a36]
-            shadow-[0_0_25px_#06b6d4] 
-            hover:shadow-[0_0_40px_#06b6d4] 
-            transition-all duration-300
-          "
+          style={{
+            width: "100%",
+            padding: "14px",
+            borderRadius: "12px",
+            background:
+              "linear-gradient(90deg, #38a9ff, #6bc9ff)",
+            color: "black",
+            fontSize: "18px",
+            fontWeight: "700",
+            border: "none",
+            cursor: "pointer",
+            boxShadow:
+              "0 0 22px rgba(80,170,255,0.55), inset 0 0 15px rgba(255,255,255,0.15)",
+          }}
         >
           Login
         </button>

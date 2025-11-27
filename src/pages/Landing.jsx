@@ -1,59 +1,140 @@
-import { useNavigate } from "react-router-dom";
-import spaceBG from "../assets/space.png";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Landing() {
   const navigate = useNavigate();
 
   return (
     <div
-      className="relative min-h-screen w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
       style={{
-        backgroundImage: `url(${spaceBG})`,
+        width: "100%",
+        minHeight: "100vh",
+        background: "radial-gradient(circle at center, #050b18, #000)",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: "20px",
+        color: "white",
       }}
     >
-      {/* CONTENT */}
-      <div className="relative z-10 flex flex-col items-center px-6 text-center">
-
-        {/* Title */}
-        <h1 className="text-7xl font-extrabold text-white tracking-wide drop-shadow-[0_0_20px_rgba(0,0,0,0.9)] mb-4">
+      {/* MAIN CARD */}
+      <div
+        style={{
+          width: "90%",
+          maxWidth: "900px",
+          padding: "40px",
+          borderRadius: "25px",
+          background: "rgba(0,0,0,0.35)",
+          border: "1px solid rgba(80,180,255,0.40)",
+          boxShadow: "0 0 25px rgba(0,150,255,0.45)",
+          textAlign: "center",
+          backgroundImage: "url('/space.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        {/* TITLE */}
+        <h1
+          style={{
+            fontSize: "70px",
+            fontWeight: "700",
+            marginBottom: "10px",
+            color: "#6ecbff",
+            textShadow: "0 0 32px #3db7ff",
+          }}
+        >
           IMAGINATE
         </h1>
 
-        {/* Subtitle */}
-        <p className="text-2xl max-w-2xl text-white drop-shadow-[0_0_10px_black] mb-10">
-          You’ve just stepped into a universe of creation where imagination becomes visual.
+        {/* SUBTEXT */}
+        <p
+          style={{
+            fontSize: "22px",
+            marginBottom: "50px",
+            textShadow: "0 0 10px black",
+          }}
+        >
+          You’ve just stepped into a universe  
+          of creation where imagination  
+          becomes visual.
         </p>
 
-        {/* MAIN BUTTON */}
+        {/* START IMAGINATING BUTTON */}
         <button
           onClick={() => navigate("/imaginate")}
-          className="px-10 py-4 bg-cyan-400 hover:bg-cyan-300 text-lg font-semibold rounded-xl shadow-xl transition"
+          style={{
+            padding: "15px 45px",
+            fontSize: "22px",
+            fontWeight: "700",
+            borderRadius: "15px",
+            background: "linear-gradient(90deg, #009dff, #00d5ff)",
+            color: "black",
+            border: "none",
+            cursor: "pointer",
+            marginBottom: "60px",
+            boxShadow: "0 0 25px rgba(0,160,255,0.6)",
+          }}
         >
           Start Imaginating
         </button>
 
         {/* BOTTOM BUTTONS */}
-        <div className="flex gap-10 absolute bottom-20 left-1/2 -translate-x-1/2">
-          <button
-            onClick={() => navigate("/about")}
-            className="text-white text-xl drop-shadow-[0_0_10px_black] hover:opacity-80"
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            gap: "40px",
+          }}
+        >
+          {/* ABOUT */}
+          <Link
+            to="/about"
+            style={{
+              padding: "10px 35px",
+              borderRadius: "12px",
+              background: "rgba(0,0,0,0.45)",
+              border: "1px solid rgba(80,180,255,0.4)",
+              color: "#6ecbff",
+              fontSize: "18px",
+              textDecoration: "none",
+              boxShadow: "0 0 12px rgba(0,150,255,0.4)",
+            }}
           >
             About
-          </button>
+          </Link>
 
-          <button
-            onClick={() => navigate("/explore")}
-            className="text-white text-xl drop-shadow-[0_0_10px_black] hover:opacity-80"
+          {/* EXPLORE */}
+          <Link
+            to="/explore"
+            style={{
+              padding: "10px 35px",
+              borderRadius: "12px",
+              background: "rgba(0,0,0,0.45)",
+              border: "1px solid rgba(80,180,255,0.4)",
+              color: "#6ecbff",
+              fontSize: "18px",
+              textDecoration: "none",
+              boxShadow: "0 0 12px rgba(0,150,255,0.4)",
+            }}
           >
             Explore
-          </button>
+          </Link>
 
-          <button
-            onClick={() => navigate("/login")}
-            className="text-white text-xl drop-shadow-[0_0_10px_black] hover:opacity-80"
+          {/* LOGIN */}
+          <Link
+            to="/login"
+            style={{
+              padding: "10px 35px",
+              borderRadius: "12px",
+              background: "rgba(0,0,0,0.45)",
+              border: "1px solid rgba(80,180,255,0.4)",
+              color: "#6ecbff",
+              fontSize: "18px",
+              textDecoration: "none",
+              boxShadow: "0 0 12px rgba(0,150,255,0.4)",
+            }}
           >
             Log In
-          </button>
+          </Link>
         </div>
       </div>
     </div>

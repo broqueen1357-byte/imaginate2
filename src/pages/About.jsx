@@ -43,7 +43,7 @@ export default function About() {
         {/* INTRO TEXT */}
         <p
           style={{
-            fontSize: "20px",
+            fontSize: "23px",
             lineHeight: "1.6",
             color: "#e6ccff",
             marginBottom: "40px",
@@ -53,7 +53,7 @@ export default function About() {
         >
           Imaginate is a creative intelligence tool that transforms raw ideas
           into clear visual concepts instantly. Instead of needing perfect prompts
-          or design skills, you simply describe your idea — and Imaginate turns it
+          or design skills, you simply describe your idea, and Imaginate turns it
           into structured, visual thinking.
         </p>
 
@@ -70,7 +70,7 @@ export default function About() {
         </h2>
 
         {/* LIST SECTION */}
-        <div style={{ textAlign: "left", maxWidth: "850px", margin: "0 auto" }}>
+        <div style={{ textAlign: "left", maxWidth: "850px", margin: "0 auto", fontSize: "25px", }}>
           {/* ITEM 1 */}
           <p style={itemStyle}>
             <strong>1. Idea-First, Not Image-First:</strong> Most tools want a
@@ -81,17 +81,17 @@ export default function About() {
 
           {/* ITEM 2 */}
           <p style={itemStyle}>
-            <strong>2. Visual Thinking, Not Just Output:</strong> It doesn’t just
-            give you a picture — it gives you clarity, interpretation, and
-            concept direction.
+            <strong>2. Visual Thinking, Not Just Visual Output:</strong> It doesn’t just
+            give you a picture it give you concept direction, interpretation, 
+            and clarity. You understand your own idea better.
           </p>
           <hr style={divider} />
 
           {/* ITEM 3 */}
           <p style={itemStyle}>
-            <strong>3. Built for Innovators, Not Designers:</strong> Students,
-            creators, entrepreneurs — anyone can bring imagination into a real
-            starting point.
+            <strong>3. Built for Innovators, Not just Designers:</strong> Students,
+            creators, entrepreneurs, builders anyone can use imaginate to bring 
+            imagination into a real starting point.
           </p>
           <hr style={divider} />
 
@@ -99,15 +99,15 @@ export default function About() {
           <p style={itemStyle}>
             <strong>4. Zero Skills Needed:</strong> No design experience.  
             No prompt engineering.  
-            Just your idea — Imaginate does the rest.
+            Just your idea and Imaginate does the rest.
           </p>
           <hr style={divider} />
 
           {/* ITEM 5 */}
           <p style={itemStyle}>
             <strong>5. Built for Fast Validation:</strong> You can test, refine,
-            and evolve ideas faster than traditional brainstorming. Perfect for
-            early creators figuring out what works.
+            and evolve ideas faster than traditional brainstorming or design tools. Perfect for
+            early creators typing to figure out what works.
           </p>
         </div>
 
@@ -179,7 +179,7 @@ export default function About() {
         </div>
 
         {/* PAGE NUMBER */}
-        <p style={{ marginTop: "40px", opacity: 0.6 }}>Page 1</p>
+        <p style={{ marginTop: "40px", opacity: 0.6 }}>Page </p>
       </div>
     </div>
   );

@@ -1,132 +1,200 @@
+import { Link } from "react-router-dom";
+
 export default function About() {
   return (
-    <div className="min-h-screen w-full flex flex-col items-center text-white 
-      px-6 py-10 bg-[#bf6b99] 
-      relative overflow-hidden">
+    <div
+      style={{
+        width: "100%",
+        minHeight: "100vh",
+        background: "radial-gradient(circle at center, #050b18, #000)",
+        padding: "40px 20px",
+        color: "white",
+        overflowY: "auto",
+      }}
+    >
+      {/* OUTER CARD */}
+      <div
+        style={{
+          width: "95%",
+          maxWidth: "1050px",
+          margin: "0 auto",
+          padding: "50px",
+          borderRadius: "25px",
+          background: "rgba(0,0,0,0.35)",
+          border: "1px solid rgba(80,180,255,0.40)",
+          boxShadow: "0 0 25px rgba(0,160,255,0.45)",
+          backdropFilter: "blur(4px)",
+          textAlign: "center",
+        }}
+      >
+        {/* TITLE */}
+        <h1
+          style={{
+            fontSize: "45px",
+            fontWeight: "700",
+            marginBottom: "20px",
+            color: "#a96bff",
+            textShadow: "0 0 25px #a96bff",
+          }}
+        >
+          About Imaginate
+        </h1>
 
-      {/* Outer neon glow */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute inset-0 rounded-3xl blur-3xl opacity-40 bg-blue-600"></div>
-      </div>
-
-      {/* CONTENT WRAPPER */}
-      <div className="relative max-w-3xl w-full text-center">
-
-        {/* ---------------------------- PAGE 1 ---------------------------- */}
-        <h1 className="text-4xl font-bold mb-6">About Imaginate</h1>
-
-        <p className="text-purple-300 text-lg leading-relaxed mb-8">
-          Imaginate is a creative intelligence tool that transforms raw ideas into 
-          clear visual concepts instantly. Instead of needing perfect prompts or 
-          design skills, you simply describe your idea, and Imaginate turns it into 
-          structured, visual thinking.
+        {/* INTRO TEXT */}
+        <p
+          style={{
+            fontSize: "20px",
+            lineHeight: "1.6",
+            color: "#e6ccff",
+            marginBottom: "40px",
+            maxWidth: "850px",
+            marginInline: "auto",
+          }}
+        >
+          Imaginate is a creative intelligence tool that transforms raw ideas
+          into clear visual concepts instantly. Instead of needing perfect prompts
+          or design skills, you simply describe your idea — and Imaginate turns it
+          into structured, visual thinking.
         </p>
 
-        <h2 className="text-2xl font-semibold mb-6 text-white">
+        <h2
+          style={{
+            fontSize: "28px",
+            marginBottom: "25px",
+            fontWeight: "700",
+            color: "white",
+          }}
+        >
           Imaginate is different from other AI tools because it focuses on ideas,
           not just images:
         </h2>
 
-        {/* PAGE 1 LIST */}
-        <div className="space-y-10 text-left">
-
-          <div>
-            <p className="text-purple-300 text-lg font-semibold">
-              1. Idea-First, Not Image-First –
-            </p>
-            <p className="text-purple-200 mt-1">
-              Most tools want a perfect prompt. Imaginate understands messy thoughts 
-              and shapes them into something clear and usable.
-            </p>
-            <div className="border-b border-purple-700 mt-4"></div>
-          </div>
-
-          <div>
-            <p className="text-purple-300 text-lg font-semibold">
-              2. Visual Thinking, Not Just Visual Output –
-            </p>
-            <p className="text-purple-200 mt-1">
-              It doesn’t just give you a picture — it gives you direction, clarity, 
-              interpretation, and understanding of your idea.
-            </p>
-            <div className="border-b border-purple-700 mt-4"></div>
-          </div>
-
-          <div>
-            <p className="text-purple-300 text-lg font-semibold">
-              3. Built for Innovators, Not Just Designers –
-            </p>
-            <p className="text-purple-200 mt-1">
-              Students, creators, entrepreneurs, and builders can use Imaginate to 
-              bring imagination into a real starting point.
-            </p>
-            <div className="border-b border-purple-700 mt-4"></div>
-          </div>
-
-        </div>
-
-        <p className="text-center text-purple-400 mt-10">Page 1 / 2</p>
-
-
-        {/* ---------------------------- PAGE 2 ---------------------------- */}
-        <div className="mt-20">
-          <h2 className="text-3xl font-bold mb-6">Why Imaginate Exists</h2>
-
-          <p className="text-purple-300 text-lg leading-relaxed mb-8">
-            People have ideas every day. But most ideas die because they are 
-            unclear, unstructured, or hard to explain visually. Imaginate exists 
-            to make imagination usable — instantly.
+        {/* LIST SECTION */}
+        <div style={{ textAlign: "left", maxWidth: "850px", margin: "0 auto" }}>
+          {/* ITEM 1 */}
+          <p style={itemStyle}>
+            <strong>1. Idea-First, Not Image-First:</strong> Most tools want a
+            perfect prompt. Imaginate understands messy thoughts and shapes them
+            into something clear and usable.
           </p>
+          <hr style={divider} />
 
-          <div className="space-y-10 text-left">
+          {/* ITEM 2 */}
+          <p style={itemStyle}>
+            <strong>2. Visual Thinking, Not Just Output:</strong> It doesn’t just
+            give you a picture — it gives you clarity, interpretation, and
+            concept direction.
+          </p>
+          <hr style={divider} />
 
-            <div>
-              <p className="text-purple-300 text-lg font-semibold">
-                4. Turning Imagination Into Reality –
-              </p>
-              <p className="text-purple-200 mt-1">
-                Imaginate converts your creative sparks into something real you 
-                can build upon — a direction, a structure, a starting point.
-              </p>
-              <div className="border-b border-purple-700 mt-4"></div>
-            </div>
+          {/* ITEM 3 */}
+          <p style={itemStyle}>
+            <strong>3. Built for Innovators, Not Designers:</strong> Students,
+            creators, entrepreneurs — anyone can bring imagination into a real
+            starting point.
+          </p>
+          <hr style={divider} />
 
-            <div>
-              <p className="text-purple-300 text-lg font-semibold">
-                5. No More Creative Block –
-              </p>
-              <p className="text-purple-200 mt-1">
-                Even if you don’t know where to start, Imaginate gives you a 
-                foundation to grow your idea.
-              </p>
-              <div className="border-b border-purple-700 mt-4"></div>
-            </div>
+          {/* ITEM 4 */}
+          <p style={itemStyle}>
+            <strong>4. Zero Skills Needed:</strong> No design experience.  
+            No prompt engineering.  
+            Just your idea — Imaginate does the rest.
+          </p>
+          <hr style={divider} />
 
-            <div>
-              <p className="text-purple-300 text-lg font-semibold">
-                6. Future of Thinking –
-              </p>
-              <p className="text-purple-200 mt-1">
-                Imaginate is not just an AI tool — it's a companion for thinkers, 
-                dreamers, and creators who want to bring imagination into motion.
-              </p>
-              <div className="border-b border-purple-700 mt-4"></div>
-            </div>
-
-          </div>
-
-          <p className="text-center text-purple-400 mt-10">Page 2 / 2</p>
+          {/* ITEM 5 */}
+          <p style={itemStyle}>
+            <strong>5. Built for Fast Validation:</strong> You can test, refine,
+            and evolve ideas faster than traditional brainstorming. Perfect for
+            early creators figuring out what works.
+          </p>
         </div>
 
-      </div>
-      {/* Back Button */}
-      <div className="mt-16 flex justify-center">
-        <a
-          href="/"
-          className="px-6 py-3 bg-purple-600 hover:bg-purple-700 rounded-xl text-white font-semibold transition-all shadow-lg hover:shadow-purple-700/40">
-            Back to Home
-          </a>
+        {/* BIG STATEMENT */}
+        <h2
+          style={{
+            fontSize: "33px",
+            fontWeight: "700",
+            marginTop: "60px",
+            marginBottom: "40px",
+          }}
+        >
+          Imaginate isn’t an image generator —  
+          it’s a thinking tool that visualizes your imagination
+        </h2>
+
+        {/* ICONS SECTION */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-around",
+            flexWrap: "wrap",
+            gap: "40px",
+            marginTop: "30px",
+          }}
+        >
+          {[
+            { label: "IMAGINE", sub: "THE SPARK ZONE" },
+            { label: "BUILD", sub: "THE CREATOR ZONE" },
+            { label: "TEST", sub: "THE SIMULATION ZONE" },
+            { label: "VISUALIZE", sub: "THE AI STUDIO" },
+          ].map((item, index) => (
+            <div key={index}>
+              <div
+                style={{
+                  width: "70px",
+                  height: "70px",
+                  borderRadius: "50%",
+                  border: "2px solid #00d5ff",
+                  boxShadow: "0 0 15px #00d5ff",
+                  margin: "0 auto 10px",
+                }}
+              ></div>
+              <h3 style={{ margin: 0 }}>{item.label}</h3>
+              <p style={{ margin: 0, color: "#9deaff" }}>{item.sub}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* BACK BUTTON */}
+        <div style={{ marginTop: "70px" }}>
+          <Link to="/">
+            <button
+              style={{
+                padding: "14px 40px",
+                fontSize: "18px",
+                fontWeight: "700",
+                borderRadius: "15px",
+                background: "linear-gradient(90deg, #009dff, #00d5ff)",
+                color: "black",
+                border: "none",
+                cursor: "pointer",
+                boxShadow: "0 0 20px rgba(0,160,255,0.6)",
+              }}
+            >
+              ← Back to Landing
+            </button>
+          </Link>
+        </div>
+
+        {/* PAGE NUMBER */}
+        <p style={{ marginTop: "40px", opacity: 0.6 }}>Page 1</p>
       </div>
     </div>
   );
 }
+
+// 🔹 Reusable Styles
+const itemStyle = {
+  color: "#df9eff",
+  fontSize: "17px",
+  lineHeight: "1.6",
+  marginBottom: "15px",
+};
+
+const divider = {
+  border: "none",
+  borderBottom: "1px solid rgba(255,255,255,0.15)",
+  margin: "18px 0",
+};

@@ -97,8 +97,7 @@ export default function Explore() {
             </h3>
 
             <p style={{ color: "#ff59d4", fontSize: "20px" }}>
-              A clean concept visualization with a curved display and
-              ultra-minimal UI.
+              A clean concept visualization showing a curved display, holographic interface, and ultra-minimal UI...
             </p>
           </div>
 
@@ -128,7 +127,7 @@ export default function Explore() {
             </h2>
 
             <p style={{ color: "#ff59d4", marginTop: "6px", fontSize: "20px" }}>
-              A cap with a retractable umbrella for harsh sunlight.
+              A cap with a retractable, button-activated umbrella for kids in harsh sunlight...
             </p>
 
             <h3 style={{ marginTop: "25px", fontWeight: "700" }}>
@@ -136,7 +135,7 @@ export default function Explore() {
             </h3>
 
             <p style={{ color: "#ff59d4", fontSize: "20px" }}>
-              A concept cap that deploys and retracts with one tap.
+              A modern illustration of a cap that deploys a protective sun umbrella and retracts with one tap...
             </p>
           </div>
 
@@ -166,7 +165,7 @@ export default function Explore() {
             </h2>
 
             <p style={{ color: "#ff59d4", marginTop: "6px", fontSize: "20px" }}>
-              A smart table that folds, stores notes, and adapts to posture.
+              A student-friendly smart table that fold digitally, store notes, and adapts to posture...
             </p>
 
             <h3 style={{ marginTop: "25px", fontWeight: "700" }}>
@@ -174,7 +173,7 @@ export default function Explore() {
             </h3>
 
             <p style={{ color: "#ff59d4", fontSize: "20px" }}>
-              A sleek visualization with a touch interface and ergonomic design.
+              A sleek visualization of a fold-able smart desk with a touch interface and ergonomic design...
             </p>
           </div>
         </div>
@@ -205,14 +204,16 @@ export default function Explore() {
           <p
             style={{
               fontSize: "25px",
-              color: "#d5d5d5",
+              color: "#ffc880",
               maxWidth: "700px",
               margin: "20 auto",
               marginBottom: "20px",
             }}
           >
             With Imaginate, you can imagine, create, and explore concepts
-            instantly. No design skills needed — only your vision.
+            instantly. You don't need design skills just your vision. 
+            We'll keep expanding imaginate with powerful features to help your 
+            idea reach the world.
           </p>
 
           <Link to="/imaginate">

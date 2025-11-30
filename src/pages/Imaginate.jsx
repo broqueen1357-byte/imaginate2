@@ -7,6 +7,11 @@ export default function Imaginate() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const isNested = location.pathname !== "/imaginate";
+
+  // -------------------------------
+  // IMAGE UPLOAD HANDLERS
+  // -------------------------------
   const handleImageUpload = (e) => {
     const file = e.target.files?.[0];
     if (file) setImage(URL.createObjectURL(file));
@@ -19,10 +24,32 @@ export default function Imaginate() {
     if (file) setImage(URL.createObjectURL(file));
   };
 
-  const isNested = location.pathname !== "/imaginate";
+  // -------------------------------
+  // GENERATE BUTTON HANDLER
+  // -------------------------------
+  const handleGenerate = () => {
+    const prompt = document.getElementById("ideaInput").value;
+
+    if (!prompt.trim()) {
+      alert("Please describe your idea.");
+      return;
+    }
+
+    if (!image) {
+      alert("Please upload an image before generating.");
+      return;
+    }
+
+    navigate("/imaginate/loading", {
+      state: {
+        prompt,
+        uploadedImage: image,
+      },
+    });
+  };
 
   return (
-      <div
+    <div
       style={{
         width: "100%",
         minHeight: "100vh",
@@ -32,6 +59,7 @@ export default function Imaginate() {
         overflowY: "auto",
       }}
     >
+      {/* If on nested route → show nested component */}
       {isNested ? (
         <Outlet />
       ) : (
@@ -96,8 +124,9 @@ export default function Imaginate() {
               Describe your idea or concept
             </h2>
 
-            {/* INPUT BAR */}
+            {/* TEXT INPUT */}
             <input
+              id="ideaInput"
               type="text"
               placeholder="Ex: A sustainable smartwatch that glows when moved…"
               style={{
@@ -166,6 +195,7 @@ export default function Imaginate() {
                 )}
               </div>
 
+              {/* HIDDEN FILE PICKER */}
               <input
                 id="fileInput"
                 type="file"
@@ -202,9 +232,9 @@ export default function Imaginate() {
               </div>
             </div>
 
-            {/* BUTTON */}
+            {/* GENERATE BUTTON */}
             <button
-              onClick={() => navigate("/imaginate/3d-result")}
+              onClick={handleGenerate}
               style={{
                 width: "100%",
                 marginTop: "40px",

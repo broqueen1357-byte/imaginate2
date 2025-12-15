@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; 
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
 
 import Landing from "./pages/Landing";
@@ -9,34 +9,81 @@ import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 
 import ThreeDResult from "./pages/imaginate/ThreeDResult";
-import NextStep from "./pages/NextStep";
-import Loading from "./pages/imaginate/Loading";  // ⭐ Add this import
-
+import FeedBack from "./pages/imaginate/FeedBack";
+import Loading from "./pages/imaginate/Loading";
 import FinalSummary from "./pages/FinalSummary";
+
+import ProtectedRoute from "./components/ProtectedRoute";
+import PublicRoute from "./components/PublicRoute";
+
+import Home from "./pages/Home";   // ⭐ Make sure this exists
+
+import FinalShowcase from "./pages/imaginate/FinalShowcase";
+
+// ADMIN
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminRoute from "./components/AdminRoute";
 
 export default function App() {
   return (
     <Router>
       <Routes>
 
-        {/* Pages inside main layout */}
+        {/* ⭐ PUBLIC ROUTES */}
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Landing />} />
           <Route path="explore" element={<Explore />} />
           <Route path="about" element={<About />} />
-          <Route path="login" element={<Login />} />
         </Route>
 
-        {/* Imaginate and its nested pages */}
-        <Route path="imaginate" element={<Imaginate />}>
-          <Route path="loading" element={<Loading />} />        {/* ⭐ Added */}
+        <Route
+          path="/login"
+          element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          }
+        />
+
+        {/* ⭐ USER HOME (AFTER LOGIN) */}
+        <Route
+          path="/home"
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ⭐ IMAGINATE FLOW (PROTECTED) */}
+        <Route
+          path="/imaginate"
+          element={
+            <ProtectedRoute>
+              <Imaginate />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="loading" element={<Loading />} />
           <Route path="3d-result" element={<ThreeDResult />} />
           <Route path="summary" element={<FinalSummary />} />
-          <Route path="next-step" element={<NextStep />} />
+          <Route path="feedback" element={<FeedBack />} />
+          <Route path="final-showcase" element={<FinalShowcase />} />
         </Route>
 
-        {/* Catch-all */}
+        {/* ⭐ ADMIN DASHBOARD */}
+        <Route
+          path="/admin"
+          element={
+            <AdminRoute>
+              <AdminDashboard />
+            </AdminRoute>
+          }
+        />
+
+        {/* 404 */}
         <Route path="*" element={<NotFound />} />
+
       </Routes>
     </Router>
   );

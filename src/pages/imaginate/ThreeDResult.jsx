@@ -1,160 +1,377 @@
+// src/pages/imaginate/ThreeDResult.jsx
+
 import { useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { supabase } from "../../supabase/supabaseClient";
 import { generateFakeOutput } from "../../utils/fakeOutputs";
 
 export default function ThreeDResult() {
-  const navigate = useNavigate();
+  const isMobile = window.innerWidth <= 768;
   const location = useLocation();
+  const navigate = useNavigate();
+  
 
-  // User entered prompt (optional)
+  const [showFeedback, setShowFeedback] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [feedback, setFeedback] = useState("");
+  const [rating, setRating] = useState(5);
+
   const userPrompt =
     location.state?.prompt ||
     sessionStorage.getItem("imaginate_prompt") ||
     "Your creative idea";
 
-  // Generate fake AI output
-  const fake = generateFakeOutput(userPrompt);
+  const [fake] = useState(() => generateFakeOutput(userPrompt));
+
+  const handleModify = () => {
+    navigate("/imaginate", { state: { fake } });
+  };
+
+  const goToFinal = () => {
+    sessionStorage.setItem(
+      "imaginate_final_data",
+      JSON.stringify(fake)
+    );
+    navigate("/imaginate/final-showcase");
+  };
+
+  const submitFeedback = async () => {
+    setIsSubmitting(true);
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (user) {
+      await supabase.from("feedback").insert({
+        user_id: user.id,
+        message: feedback || "No written feedback",
+        rating: rating === 0 ? null : rating,
+        source: "quick_modal",
+      });
+    }
+
+    // Fade content
+    setTimeout(() => setShowSuccess(true), 300);
+
+    // Navigate after animation
+    setTimeout(goToFinal, 1200);
+  };
 
   return (
     <div
       style={{
-        width: "100%",
         minHeight: "100vh",
-        background: "radial-gradient(circle at center, #020816, #000814)",
-        padding: "30px",
+        background: "#0A1224",
         color: "white",
-        fontFamily: "Inter, sans-serif",
+        padding: isMobile ? "20px" : "40px",
+        display: "flex",
+        justifyContent: "center",
+        position: "relative",
       }}
     >
       <div
         style={{
-          maxWidth: "1100px",
-          margin: "0 auto",
           display: "flex",
-          gap: "30px",
+          flexDirection: isMobile ? "column" : "row",
+          gap: isMobile ? "24px" : "40px",
+          maxWidth: "1100px",
+          alignItems: "center",
+          width: "100%",
         }}
       >
-        {/* LEFT - IMAGE PREVIEW */}
-        <div style={{ flex: "0 0 45%" }}>
-          <div
+        {/* LEFT IMAGE */}
+        <div
+          style={{
+            width: isMobile ? "100%" : "500px",
+            height: isMobile ? "320px" : "550px",
+            borderRadius: "14px",
+            overflow: "hidden",
+            background: "rgba(255,255,255,0.05)",
+            padding: "10px",
+          }}
+        >
+          <img
+            src={fake.image}
+            alt="Generated Concept"
             style={{
-              background: "white",
-              borderRadius: "14px",
-              padding: "12px",
-              boxShadow: "0 0 25px rgba(0,180,255,0.25)",
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              borderRadius: "15px",
+            }}
+          />
+        </div>
+
+        {/* RIGHT CONTENT */}
+        <div style={{ flex: 1 }}>
+          <h1 style={{ 
+            fontSize: isMobile ? "34px" : "65px", 
+            fontWeight: "900",
+            marginBottom: "10px",
+            textAlign: isMobile ? "center" : "left",
             }}
           >
-            <div
-              style={{
-                width: "100%",
-                height: "430px",
-                borderRadius: "10px",
-                overflow: "hidden",
-                backgroundImage: `url("${fake.image}")`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
-            />
+            {fake.title}
+          </h1>
+
+          <p
+            style={{
+              fontSize: isMobile ? "18px" : "23px",
+              maxWidth: "500px",
+              lineHeight: "1.6",
+              opacity: 0.85,
+              textAlign: isMobile ? "center" : "left",
+            }}
+          >
+            {fake.description}
+          </p>
+
+          <div style={{ marginTop: "20px" }}>
+            <h3 style={{ opacity: 0.8 }}>Prompt Used</h3>
+            <p style={{ fontSize: "20px" }}>{fake.promptUsed}</p>
           </div>
 
-          {/* BUTTONS */}
-          <div style={{ marginTop: "20px", display: "flex", gap: "12px" }}>
-            {/* Download */}
+          <div>
+            <h3 style={{ opacity: 0.8 }}>Key Features</h3>
+            <ul style={{ fontSize: "20px", lineHeight: "1.8" }}>
+              {fake.features.map((f, i) => (
+                <li key={i}>{f}</li>
+              ))}
+            </ul>
+          </div>
+           
+          <div style={{
+            marginTop: "25px",
+            display: "flex", 
+            gap: "15px",
+            flexDirection: isMobile ? "column" : "row",
+            width: isMobile ? "100%" : "auto",
+           }}
+          >
             <button
-              onClick={() => {
-                const a = document.createElement("a");
-                a.href = fake.image;
-                a.download = "imaginate-result.png";
-                document.body.appendChild(a);
-                a.click();
-                a.remove();
-              }}
-              style={buttonWhite}
+              onClick={handleModify}
+              style={btn.secondary}
             >
-              Download PNG
+              Modify
             </button>
-
-            {/* Next Step → FinalSummary */}
+          <div style={{
+            marginTop: "25px",
+            display: "flex", 
+            gap: "15px",
+            flexDirection: isMobile ? "column" : "row",
+            width: isMobile ? "100%" : "auto",
+           }}
+          >
+          </div>
             <button
-              onClick={() =>
-                navigate("/imaginate/next-step", {
-                  state: {
-                    fake, // pass entire fake AI object
-                  },
-                })
-              }
-              style={buttonBlue}
+              onClick={() => setShowFeedback(true)}
+              style={btn.primary}
             >
               Next Step →
             </button>
           </div>
         </div>
-
-        {/* RIGHT - TEXT */}
-        <div
-          style={{
-            flex: 1,
-            background: "white",
-            color: "#021d2b",
-            padding: "22px",
-            borderRadius: "14px",
-            boxShadow: "0 0 25px rgba(0,180,255,0.15)",
-          }}
-        >
-          <h1 style={{ margin: 0, fontSize: "26px", fontWeight: 800 }}>
-            {fake.title}
-          </h1>
-
-          <p style={{ marginTop: 8, color: "#4d6570" }}>{fake.description}</p>
-
-          <section style={{ marginTop: 20 }}>
-            <h3 style={sectionTitle}>Prompt Used</h3>
-            <p style={sectionText}>{fake.promptUsed}</p>
-          </section>
-
-          <section style={{ marginTop: 20 }}>
-            <h3 style={sectionTitle}>Key Features</h3>
-            <ul style={{ margin: 0, paddingLeft: "18px" }}>
-              {fake.features.map((f, i) => (
-                <li key={i} style={{ marginBottom: "6px", color: "#173949" }}>
-                  {f}
-                </li>
-              ))}
-            </ul>
-          </section>
-        </div>
       </div>
+
+      {/* ================= MODAL ================= */}
+      {showFeedback && (
+        <>
+          <div style={styles.overlay} />
+
+          <div style={styles.modal}>
+            <div style={{ textAlign: "right" }}>
+              <button
+                onClick={goToFinal}
+                style={styles.close}
+              >
+                ✕
+              </button>
+            </div>
+
+            <h2 
+              style={{
+                fontSize: "38px",
+                fontWeight: "800",
+                color: "white",
+                textAlign: "center",
+                transition: "all 0.17s ease",
+              }}
+            >
+              {showSuccess ? "Thank you ✨" : "Quick feedback"}
+            </h2>
+            {!showSuccess && (
+            <p
+              style={{
+              textAlign: "center",
+              marginTop: "6px",
+              color: "rgba(255,255,255,0.8)",
+              fontSize: "21px",
+             }}
+            >
+              Help us improve Imaginate. How was your result? 😄
+            </p>
+            )}
+
+            {!showSuccess ? (
+              <>
+                <textarea
+                  value={feedback}
+                  onChange={(e) => setFeedback(e.target.value)}
+                  placeholder="Write your feedback..."
+                  style={styles.textarea}
+                  disabled={isSubmitting}
+                />
+
+                <button
+                  onClick={submitFeedback}
+                  style={{
+                    ...styles.button,
+                    transform: isSubmitting ? "scale(0.96)" : "scale(1)",
+                    opacity: isSubmitting ? 0.85 : 1,
+                  }}
+                >
+                  {isSubmitting ? "Sending…" : "Submit & Continue"}
+                </button>
+              </>
+            ) : (
+                <div style={styles.successWrap}>
+                <div style={styles.glow} />
+                <div style={styles.check}>✓</div>
+                <p style={styles.successText}>
+                  Feedback received<br />Thank you
+                </p>
+              </div>
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 }
 
-const buttonBlue = {
-  padding: "10px 16px",
-  background: "linear-gradient(90deg,#00b4ff,#006dff)",
-  color: "white",
-  borderRadius: "10px",
-  border: "none",
-  fontWeight: 700,
-  cursor: "pointer",
+/* ================= STYLES ================= */
+
+const btn = {
+  primary: {
+    background: "#1EC8FF",
+    color: "black",
+    fontWeight: "600",
+    border: "none",
+    padding: "10px 22px",
+    borderRadius: "8px",
+    cursor: "pointer",
+  },
+  secondary: {
+    background: "rgba(255,255,255,0.2)",
+    color: "white",
+    border: "none",
+    padding: "10px 20px",
+    borderRadius: "8px",
+    cursor: "pointer",
+  },
 };
 
-const buttonWhite = {
-  padding: "10px 16px",
-  background: "white",
-  color: "#003c57",
-  border: "1px solid rgba(0,150,255,0.2)",
-  borderRadius: "10px",
-  fontWeight: 700,
-  cursor: "pointer",
+const styles = {
+  overlay: {
+    position: "fixed",
+    inset: 0,
+    background: "rgba(0,0,0,0.6)",
+    backdropFilter: "blur(8px)",
+    zIndex: 50,
+  },
+  modal: {
+    position: "fixed",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: "420px",
+    padding: "30px",
+    borderRadius: "22px",
+    background: "linear-gradient(145deg, #6b3ce8, #0a6fe6)",
+    boxShadow: "0 0 30px rgba(0,0,0,0.4)",
+    zIndex: 100,
+  },
+  close: {
+    background: "transparent",
+    border: "none",
+    fontSize: "24px",
+    color: "white",
+    cursor: "pointer",
+  },
+  title: {
+    textAlign: "center",
+    fontWeight: "700",
+    fontSize: "40px",
+  },
+  subtitle: {
+    textAlign: "center",
+    opacity: 0.85,
+    marginBottom: "15px",
+    fontSize: "20px",
+  },
+  textarea: {
+    width: "100%",
+    height: "110px",
+    borderRadius: "15px",
+    padding: "12px",
+    background: "rgba(0,0,0,0.4)",
+    color: "white",
+    border: "1px solid rgba(255,255,255,0.3)",
+    resize: "none",
+    marginBottom: "15px",
+  },
+  button: {
+    width: "100%",
+    padding: "15px",
+    borderRadius: "12px",
+    border: "none",
+    background: "linear-gradient(90deg,#3d6cff,#6f92ff)",
+    color: "white",
+    fontWeight: "600",
+    cursor: "pointer",
+    transition: "transform 100ms ease-out, opacity 100ms ease-out",
+  },
+  successWrap: {
+    marginTop: "30px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: "10px",
+    animation: "popIn 0.25s ease forwards",
+  },
+
+  glow: {
+    width: "80px",
+    height: "80px",
+    margin: "0 auto",
+    borderRadius: "50%",
+    background:
+      "radial-gradient(circle, rgba(80,120,255,0.4), transparent)",
+  },
+  check: {
+    fontSize: "36px",
+    marginTop: "-55px",
+    opacity: 0.95,
+  },
+  successText: {
+    marginTop: "15px",
+    opacity: 0.9,
+  },
 };
 
-const sectionTitle = {
-  margin: 0,
-  fontSize: "15px",
-  fontWeight: 800,
-  color: "#014b56",
-};
-
-const sectionText = {
-  marginTop: "6px",
-  color: "#2a4c59",
-};
+<style>
+{`
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.03);
+  }
+}
+`}
+</style>

@@ -43,13 +43,13 @@ export default function Explore() {
         {/* SUBTEXT */}
         <p
           style={{
-            fontSize: "20px",
+            fontSize: "25px",
             marginBottom: "45px",
             color: "#e0e0e0",
             textShadow: "0 0 10px black",
           }}
         >
-          See how your ideas turn into visual concepts.
+          See how simple ideas turn into clear visual concept.
         </p>
 
         {/* 3-CARD GRID */}
@@ -88,16 +88,7 @@ export default function Explore() {
             </h2>
 
             <p style={{ color: "#ff59d4", marginTop: "6px", fontSize: "20px" }}>
-              Design a futuristic smartwatch for 2030 that feels minimal,
-              intelligent, and sleek.
-            </p>
-
-            <h3 style={{ marginTop: "25px", fontWeight: "700" }}>
-              Imaginate Output
-            </h3>
-
-            <p style={{ color: "#ff59d4", fontSize: "20px" }}>
-              A clean concept visualization showing a curved display, holographic interface, and ultra-minimal UI...
+              A minimal AI-powered wearable concept designed for 2030
             </p>
           </div>
 
@@ -127,15 +118,7 @@ export default function Explore() {
             </h2>
 
             <p style={{ color: "#ff59d4", marginTop: "6px", fontSize: "20px" }}>
-              A cap with a retractable, button-activated umbrella for kids in harsh sunlight...
-            </p>
-
-            <h3 style={{ marginTop: "25px", fontWeight: "700" }}>
-              Imaginate Output
-            </h3>
-
-            <p style={{ color: "#ff59d4", fontSize: "20px" }}>
-              A modern illustration of a cap that deploys a protective sun umbrella and retracts with one tap...
+              A smart cap that deploys instant sun protection with one tap
             </p>
           </div>
 
@@ -165,15 +148,7 @@ export default function Explore() {
             </h2>
 
             <p style={{ color: "#ff59d4", marginTop: "6px", fontSize: "20px" }}>
-              A student-friendly smart table that fold digitally, store notes, and adapts to posture...
-            </p>
-
-            <h3 style={{ marginTop: "25px", fontWeight: "700" }}>
-              Imaginate Output
-            </h3>
-
-            <p style={{ color: "#ff59d4", fontSize: "20px" }}>
-              A sleek visualization of a fold-able smart desk with a touch interface and ergonomic design...
+              An adaptive study desk that supports posture, notes, and focus.
             </p>
           </div>
         </div>
@@ -186,13 +161,13 @@ export default function Explore() {
             background: "rgba(0,0,0,0.35)",
             border: "1px solid rgba(80,180,255,0.4)",
             boxShadow: "0 0 18px rgba(0,160,255,0.4)",
-            marginTop: "40px", // ⭐ MOVES FOOTER DOWN
-            marginBottom: "40px", // ⭐ EXTRA SPACE UNDER FOOTER
+            marginTop: "10px", // ⭐ MOVES FOOTER DOWN
+            marginBottom: "10px", // ⭐ EXTRA SPACE UNDER FOOTER
           }}
         >
           <h2
             style={{
-              fontSize: "35px",
+              fontSize: "40px",
               fontWeight: "700",
               marginTop: "30px",
               marginBottom: "20px",
@@ -200,21 +175,6 @@ export default function Explore() {
           >
             Your ideas can shape the future
           </h2>
-
-          <p
-            style={{
-              fontSize: "25px",
-              color: "#ffc880",
-              maxWidth: "700px",
-              margin: "20 auto",
-              marginBottom: "20px",
-            }}
-          >
-            With Imaginate, you can imagine, create, and explore concepts
-            instantly. You don't need design skills just your vision. 
-            We'll keep expanding imaginate with powerful features to help your 
-            idea reach the world.
-          </p>
 
           <Link to="/imaginate">
             <button

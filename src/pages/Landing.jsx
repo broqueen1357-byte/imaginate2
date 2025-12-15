@@ -14,127 +14,131 @@ export default function Landing() {
         alignItems: "center",
         padding: "20px",
         color: "white",
+        boxSizing: "border-box",
       }}
     >
       {/* MAIN CARD */}
       <div
         style={{
-          width: "90%",
+          width: "100%",
           maxWidth: "900px",
-          padding: "40px",
+          padding: "clamp(22px, 5vw, 40px)",
           borderRadius: "25px",
           background: "rgba(0,0,0,0.35)",
           border: "1px solid rgba(80,180,255,0.40)",
           boxShadow: "0 0 25px rgba(0,150,255,0.45)",
           textAlign: "center",
-          backgroundImage: "url('/space.png')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
+          position: "relative",
+          overflow: "hidden",
         }}
       >
-        {/* TITLE */}
-        <h1
-          style={{
-            fontSize: "70px",
-            fontWeight: "700",
-            marginBottom: "10px",
-            color: "#6ecbff",
-            textShadow: "0 0 32px #3db7ff",
-          }}
-        >
-          IMAGINATE
-        </h1>
-
-        {/* SUBTEXT */}
-        <p
-          style={{
-            fontSize: "22px",
-            marginBottom: "50px",
-            textShadow: "0 0 10px black",
-          }}
-        >
-          You’ve just stepped into a universe  
-          of creation where imagination  
-          becomes visual.
-        </p>
-
-        {/* START IMAGINATING BUTTON */}
-        <button
-          onClick={() => navigate("/imaginate")}
-          style={{
-            padding: "15px 45px",
-            fontSize: "22px",
-            fontWeight: "700",
-            borderRadius: "15px",
-            background: "linear-gradient(90deg, #009dff, #00d5ff)",
-            color: "black",
-            border: "none",
-            cursor: "pointer",
-            marginBottom: "60px",
-            boxShadow: "0 0 25px rgba(0,160,255,0.6)",
-          }}
-        >
-          Start Imaginating
-        </button>
-
-        {/* BOTTOM BUTTONS */}
+        {/* BACKGROUND IMAGE BLUR */}
         <div
           style={{
-            display: "flex",
-            justifyContent: "center",
-            gap: "40px",
+            position: "absolute",
+            inset: 0,
+            backgroundImage: "url('/space.png')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            filter: "blur(4px)",
+            opacity: 0.9,
+            zIndex: 0,
           }}
-        >
-          {/* ABOUT */}
-          <Link
-            to="/about"
-            style={{
-              padding: "10px 35px",
-              borderRadius: "12px",
-              background: "rgba(0,0,0,0.45)",
-              border: "1px solid rgba(80,180,255,0.4)",
-              color: "#6ecbff",
-              fontSize: "18px",
-              textDecoration: "none",
-              boxShadow: "0 0 12px rgba(0,150,255,0.4)",
-            }}
-          >
-            About
-          </Link>
+        />
 
-          {/* EXPLORE */}
-          <Link
-            to="/explore"
+        {/* CONTENT */}
+        <div style={{ position: "relative", zIndex: 1 }}>
+          {/* TITLE */}
+          <h1
             style={{
-              padding: "10px 35px",
-              borderRadius: "12px",
-              background: "rgba(0,0,0,0.45)",
-              border: "1px solid rgba(80,180,255,0.4)",
+              fontSize: "clamp(42px, 9vw, 75px)",
+              fontWeight: "700",
+              marginBottom: "8px",
               color: "#6ecbff",
-              fontSize: "18px",
-              textDecoration: "none",
-              boxShadow: "0 0 12px rgba(0,150,255,0.4)",
+              textShadow: "0 0 10px #3db7ff",
             }}
           >
-            Explore
-          </Link>
+            IMAGINATE
+          </h1>
 
-          {/* LOGIN */}
-          <Link
-            to="/login"
+          {/* SUBTEXT */}
+          <p
             style={{
-              padding: "10px 35px",
-              borderRadius: "12px",
-              background: "rgba(0,0,0,0.45)",
-              border: "1px solid rgba(80,180,255,0.4)",
-              color: "#6ecbff",
-              fontSize: "18px",
-              textDecoration: "none",
-              boxShadow: "0 0 12px rgba(0,150,255,0.4)",
+              fontSize: "clamp(20px, 5vw, 35px)",
+              marginBottom: "8px",
+              textShadow: "0 0 10px #000",
             }}
           >
-            Log In
-          </Link>
+            Turn Ideas Into Visual Concepts
+          </p>
+
+          <p
+            style={{
+              fontSize: "clamp(16px, 4vw, 25px)",
+              marginBottom: "35px",
+              lineHeight: "1.5",
+              textShadow: "0 0 6px #000",
+              opacity: 0.95,
+            }}
+          >
+            Describe your idea — Imaginate transforms it into a clear visual
+            concept in seconds.
+          </p>
+
+          {/* CTA */}
+          <button
+            onClick={() => navigate("/imaginate")}
+            style={{
+              padding: "14px 42px",
+              fontSize: "18px",
+              fontWeight: "700",
+              borderRadius: "14px",
+              background: "linear-gradient(90deg, #009dff, #00d5ff)",
+              color: "black",
+              border: "none",
+              cursor: "pointer",
+              marginBottom: "45px",
+              boxShadow: "0 0 25px rgba(0,160,255,0.6)",
+              width: "min(100%, 260px)",
+            }}
+          >
+            Start Imaginating
+          </button>
+
+          {/* BOTTOM LINKS */}
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "center",
+              gap: "16px",
+            }}
+          >
+            {[
+              { to: "/about", label: "About" },
+              { to: "/explore", label: "Explore" },
+              { to: "/login", label: "Log In" },
+            ].map((item) => (
+              <Link
+                key={item.to}
+                to={item.to}
+                style={{
+                  padding: "10px 26px",
+                  borderRadius: "12px",
+                  background: "rgba(0,0,0,0.45)",
+                  border: "1px solid rgba(80,180,255,0.4)",
+                  color: "#6ecbff",
+                  fontSize: "16px",
+                  textDecoration: "none",
+                  boxShadow: "0 0 12px rgba(0,150,255,0.4)",
+                  minWidth: "110px",
+                  textAlign: "center",
+                }}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </div>

@@ -1,4 +1,75 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "../supabase/supabaseClient";
+
 export default function Login() {
+  const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isCreating, setIsCreating] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  // -----------------------------------
+  // CHECK SESSION — BUT ONLY AFTER MOUNT
+  // -----------------------------------
+  useEffect(() => {
+    async function checkSession() {
+      const { data } = await supabase.auth.getUser();
+      if (data?.user) {
+        navigate("/home"); 
+      }
+    }
+    checkSession();
+  }, []);
+
+  // -----------------------------------
+  // LOGIN
+  // -----------------------------------
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      setLoading(false);
+      setError(error.message);
+      return;
+    }
+
+    navigate("/home");
+  };
+
+  // -----------------------------------
+  // SIGN UP
+  // -----------------------------------
+  const handleCreateAccount = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+
+    if (error) {
+      setLoading(false);
+      setError(error.message);
+      return;
+    }
+
+    setLoading(false);
+    alert("Account created! Please verify your email before logging in.");
+    setIsCreating(false);
+  };
+
   return (
     <div
       style={{
@@ -13,7 +84,6 @@ export default function Login() {
         color: "white",
       }}
     >
-      {/* IMAGINATE TITLE */}
       <h1
         style={{
           fontSize: "48px",
@@ -27,7 +97,6 @@ export default function Login() {
         IMAGINATE
       </h1>
 
-      {/* LOGIN CARD */}
       <div
         style={{
           width: "400px",
@@ -39,7 +108,6 @@ export default function Login() {
             "0 0 25px rgba(80,180,255,0.4), inset 0 0 20px rgba(20,60,120,0.3)",
         }}
       >
-        {/* LOGIN HEADING */}
         <h2
           style={{
             marginBottom: "25px",
@@ -47,13 +115,14 @@ export default function Login() {
             fontWeight: "600",
           }}
         >
-          Login
+          {isCreating ? "Create Account" : "Login"}
         </h2>
 
-        {/* EMAIL INPUT */}
         <input
           type="email"
           placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           style={{
             width: "100%",
             padding: "14px",
@@ -66,10 +135,11 @@ export default function Login() {
           }}
         />
 
-        {/* PASSWORD INPUT */}
         <input
           type="password"
           placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           style={{
             width: "100%",
             padding: "14px",
@@ -82,48 +152,80 @@ export default function Login() {
           }}
         />
 
-        {/* REMEMBER ME */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "8px",
-            marginBottom: "25px",
-          }}
-        >
-          <input
-            type="checkbox"
+        {!isCreating && (
+          <div
             style={{
-              width: "18px",
-              height: "18px",
-              accentColor: "#5cbcff",
-              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              marginBottom: "25px",
             }}
-          />
-          <span style={{ fontSize: "15px", color: "#a8b8ff" }}>
-            Remember me
-          </span>
-        </div>
+          >
+            <input
+              type="checkbox"
+              style={{
+                width: "18px",
+                height: "18px",
+                accentColor: "#5cbcff",
+                cursor: "pointer",
+              }}
+            />
+            <span style={{ fontSize: "15px", color: "#a8b8ff" }}>
+              Remember me
+            </span>
+          </div>
+        )}
 
-        {/* LOGIN BUTTON */}
+        {error && (
+          <p style={{ color: "red", marginBottom: "15px", fontWeight: "500" }}>
+            {error}
+          </p>
+        )}
+
         <button
+          onClick={isCreating ? handleCreateAccount : handleLogin}
+          disabled={loading}
           style={{
             width: "100%",
             padding: "14px",
             borderRadius: "12px",
-            background:
-              "linear-gradient(90deg, #38a9ff, #6bc9ff)",
+            background: "linear-gradient(90deg, #38a9ff, #6bc9ff)",
             color: "black",
             fontSize: "18px",
             fontWeight: "700",
             border: "none",
             cursor: "pointer",
+            opacity: loading ? 0.6 : 1,
             boxShadow:
               "0 0 22px rgba(80,170,255,0.55), inset 0 0 15px rgba(255,255,255,0.15)",
+            marginBottom: "12px",
           }}
         >
-          Login
+          {loading
+            ? "Please wait..."
+            : isCreating
+            ? "Create Account"
+            : "Login"}
         </button>
+
+        <p
+          onClick={() => {
+            setIsCreating(!isCreating);
+            setError("");
+            setEmail("");
+            setPassword("");
+          }}
+          style={{
+            textAlign: "center",
+            color: "#a8b8ff",
+            cursor: "pointer",
+            marginTop: "10px",
+          }}
+        >
+          {isCreating
+            ? "Already have an account? Login"
+            : "Don't have an account? Create one"}
+        </p>
       </div>
     </div>
   );

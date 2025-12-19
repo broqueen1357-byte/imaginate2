@@ -19,6 +19,8 @@ import PublicRoute from "./components/PublicRoute";
 import Home from "./pages/Home";   // ⭐ Make sure this exists
 
 import FinalShowcase from "./pages/imaginate/FinalShowcase";
+import SavedImaginate from "./pages/imaginate/SavedImaginate";
+
 
 // ADMIN
 import AdminDashboard from "./pages/AdminDashboard";
@@ -69,6 +71,7 @@ export default function App() {
           <Route path="summary" element={<FinalSummary />} />
           <Route path="feedback" element={<FeedBack />} />
           <Route path="final-showcase" element={<FinalShowcase />} />
+          <Route path="saved" element={<SavedImaginate />} />
         </Route>
 
         {/* ⭐ ADMIN DASHBOARD */}

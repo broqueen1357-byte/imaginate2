@@ -13,6 +13,17 @@ export const futuristicImages = [
   "/fake/futuristic/f10.png",
   "/fake/futuristic/f11.png",
   "/fake/futuristic/f12.png",
+  "/fake/futuristic/f13.png",
+  "/fake/futuristic/f14.png",
+  "/fake/futuristic/f15.png",
+  "/fake/futuristic/f16.png",
+  "/fake/futuristic/f17.png",
+  "/fake/futuristic/f18.png",
+  "/fake/futuristic/f19.png",
+  "/fake/futuristic/f20.png",
+  "/fake/futuristic/f21.png",
+  "/fake/futuristic/f22.png",
+  "/fake/futuristic/f23.png",
 ];
 
 // Random features for fake AI output
@@ -27,6 +38,15 @@ const features = [
   "Ultra-light carbon frame",
   "Smart touch panel",
   "Wireless power loop",
+  "Electrical damage & Danger detection device",
+  "Futuristic smart housework gloves",
+  "Mind-to-design head device",
+  "Smart child safety monitoring device",
+  "Construction site safety system (Smart helmets)",
+  "Futuristic smart kitchen holder",
+  "Smart classroom with choice-based learning",
+  "Mind-controlled AI device (object control)",
+  "Futuristic mini bottle(Bottle + Glass)",
 ];
 
 export function generateFakeOutput(prompt = "") {

@@ -8,6 +8,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [suggestSignup, setSuggestSignup] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -32,14 +33,21 @@ export default function Login() {
     setLoading(true);
     setError("");
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
     if (error) {
-      setLoading(false);
-      setError(error.message);
+      const msg = error.message.toLowerCase();
+
+      if (
+        msg.includes("invalid login credentials") ||
+        msg.includes("email not confirmed")
+      ) {
+        setError(
+          "Looks like you don't have an account yet. Create one to get started ✨"
+        );
+        setSuggestSignup(true);
+      } else {
+        setError(error.message);
+      }
+
       return;
     }
 
@@ -177,7 +185,7 @@ export default function Login() {
         )}
 
         {error && (
-          <p style={{ color: "red", marginBottom: "15px", fontWeight: "500" }}>
+          <p style={{ color: "#ffb3b3", marginTop: 12 }}>
             {error}
           </p>
         )}
@@ -208,7 +216,8 @@ export default function Login() {
             : "Login"}
         </button>
 
-        <p
+        <p style={{ marginTop: 16 }}>
+          <span
           onClick={() => {
             setIsCreating(!isCreating);
             setError("");
@@ -216,15 +225,17 @@ export default function Login() {
             setPassword("");
           }}
           style={{
-            textAlign: "center",
-            color: "#a8b8ff",
             cursor: "pointer",
-            marginTop: "10px",
+            fontWeight: "bold",
+            textAlign: "center",
+            color: suggestSignup ? "#6ecbff" : "#aaa",
+            textDecoration: suggestSignup ? "underline" : "none",
           }}
         >
           {isCreating
             ? "Already have an account? Login"
             : "Don't have an account? Create one"}
+          </span>
         </p>
       </div>
     </div>

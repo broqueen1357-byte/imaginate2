@@ -8,21 +8,18 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [suggestSignup, setSuggestSignup] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [loading, setLoading] = useState(false);
 
   // -----------------------------------
-  // CHECK SESSION — BUT ONLY AFTER MOUNT
+  // CHECK SESSION ON LOAD
   // -----------------------------------
   useEffect(() => {
-    async function checkSession() {
-      const { data } = await supabase.auth.getUser();
+    supabase.auth.getUser().then(({ data }) => {
       if (data?.user) {
-        navigate("/home"); 
+        navigate("/home");
       }
-    }
-    checkSession();
+    });
   }, []);
 
   // -----------------------------------
@@ -33,6 +30,13 @@ export default function Login() {
     setLoading(true);
     setError("");
 
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    setLoading(false);
+
     if (error) {
       const msg = error.message.toLowerCase();
 
@@ -41,9 +45,8 @@ export default function Login() {
         msg.includes("email not confirmed")
       ) {
         setError(
-          "Looks like you don't have an account yet. Create one to get started ✨"
+          "Looks like you don’t have an account yet. Create one to get started ✨"
         );
-        setSuggestSignup(true);
       } else {
         setError(error.message);
       }
@@ -67,14 +70,14 @@ export default function Login() {
       password,
     });
 
+    setLoading(false);
+
     if (error) {
-      setLoading(false);
       setError(error.message);
       return;
     }
 
-    setLoading(false);
-    alert("Account created! Please verify your email before logging in.");
+    alert("Account created! Please check your email to confirm.");
     setIsCreating(false);
   };
 
@@ -86,7 +89,6 @@ export default function Login() {
         background: "radial-gradient(circle at top, #071021, #000)",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "flex-start",
         alignItems: "center",
         paddingTop: "70px",
         color: "white",
@@ -99,7 +101,6 @@ export default function Login() {
           marginBottom: "40px",
           color: "#6ecbff",
           textShadow: "0 0 25px #3db7ff",
-          letterSpacing: "2px",
         }}
       >
         IMAGINATE
@@ -108,21 +109,13 @@ export default function Login() {
       <div
         style={{
           width: "400px",
-          padding: "35px 30px",
+          padding: "35px",
           borderRadius: "25px",
           background: "rgba(10, 14, 30, 0.85)",
           border: "1px solid rgba(80,180,255,0.55)",
-          boxShadow:
-            "0 0 25px rgba(80,180,255,0.4), inset 0 0 20px rgba(20,60,120,0.3)",
         }}
       >
-        <h2
-          style={{
-            marginBottom: "25px",
-            fontSize: "26px",
-            fontWeight: "600",
-          }}
-        >
+        <h2 style={{ marginBottom: "25px" }}>
           {isCreating ? "Create Account" : "Login"}
         </h2>
 
@@ -131,16 +124,7 @@ export default function Login() {
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          style={{
-            width: "100%",
-            padding: "14px",
-            marginBottom: "15px",
-            borderRadius: "12px",
-            background: "rgba(0,0,0,0.35)",
-            border: "1px solid rgba(80,150,255,0.4)",
-            color: "white",
-            outline: "none",
-          }}
+          style={inputStyle}
         />
 
         <input
@@ -148,66 +132,17 @@ export default function Login() {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          style={{
-            width: "100%",
-            padding: "14px",
-            marginBottom: "12px",
-            borderRadius: "12px",
-            background: "rgba(0,0,0,0.35)",
-            border: "1px solid rgba(80,150,255,0.4)",
-            color: "white",
-            outline: "none",
-          }}
+          style={inputStyle}
         />
 
-        {!isCreating && (
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-              marginBottom: "25px",
-            }}
-          >
-            <input
-              type="checkbox"
-              style={{
-                width: "18px",
-                height: "18px",
-                accentColor: "#5cbcff",
-                cursor: "pointer",
-              }}
-            />
-            <span style={{ fontSize: "15px", color: "#a8b8ff" }}>
-              Remember me
-            </span>
-          </div>
-        )}
-
         {error && (
-          <p style={{ color: "#ffb3b3", marginTop: 12 }}>
-            {error}
-          </p>
+          <p style={{ color: "#ffb3b3", marginBottom: 12 }}>{error}</p>
         )}
 
         <button
           onClick={isCreating ? handleCreateAccount : handleLogin}
           disabled={loading}
-          style={{
-            width: "100%",
-            padding: "14px",
-            borderRadius: "12px",
-            background: "linear-gradient(90deg, #38a9ff, #6bc9ff)",
-            color: "black",
-            fontSize: "18px",
-            fontWeight: "700",
-            border: "none",
-            cursor: "pointer",
-            opacity: loading ? 0.6 : 1,
-            boxShadow:
-              "0 0 22px rgba(80,170,255,0.55), inset 0 0 15px rgba(255,255,255,0.15)",
-            marginBottom: "12px",
-          }}
+          style={buttonStyle(loading)}
         >
           {loading
             ? "Please wait..."
@@ -216,8 +151,7 @@ export default function Login() {
             : "Login"}
         </button>
 
-        <p style={{ marginTop: 16 }}>
-          <span
+        <p
           onClick={() => {
             setIsCreating(!isCreating);
             setError("");
@@ -225,19 +159,41 @@ export default function Login() {
             setPassword("");
           }}
           style={{
-            cursor: "pointer",
-            fontWeight: "bold",
             textAlign: "center",
-            color: suggestSignup ? "#6ecbff" : "#aaa",
-            textDecoration: suggestSignup ? "underline" : "none",
+            color: "#a8b8ff",
+            cursor: "pointer",
+            marginTop: 10,
           }}
         >
           {isCreating
             ? "Already have an account? Login"
             : "Don't have an account? Create one"}
-          </span>
         </p>
       </div>
     </div>
   );
 }
+
+const inputStyle = {
+  width: "100%",
+  padding: "14px",
+  marginBottom: "15px",
+  borderRadius: "12px",
+  background: "rgba(0,0,0,0.35)",
+  border: "1px solid rgba(80,150,255,0.4)",
+  color: "white",
+  outline: "none",
+};
+
+const buttonStyle = (loading) => ({
+  width: "100%",
+  padding: "14px",
+  borderRadius: "12px",
+  background: "linear-gradient(90deg, #38a9ff, #6bc9ff)",
+  color: "black",
+  fontSize: "18px",
+  fontWeight: "700",
+  border: "none",
+  cursor: "pointer",
+  opacity: loading ? 0.6 : 1,
+});

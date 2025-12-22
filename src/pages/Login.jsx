@@ -45,7 +45,7 @@ export default function Login() {
         msg.includes("email not confirmed")
       ) {
         setError(
-          "Looks like you don’t have an account yet. Create one to get started ✨"
+          "Looks like you are new here 😄. Create an account now to get started ✨"
         );
       } else {
         setError(error.message);

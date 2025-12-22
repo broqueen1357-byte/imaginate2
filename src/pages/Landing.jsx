@@ -40,7 +40,7 @@ export default function Landing() {
             backgroundImage: "url('/space.png')",
             backgroundSize: "cover",
             backgroundPosition: "center",
-            filter: "blur(4px)",
+            filter: "blur(3px)",
             opacity: 0.9,
             zIndex: 0,
           }}
@@ -83,6 +83,18 @@ export default function Landing() {
           >
             Describe your idea — Imaginate transforms it into a clear visual
             concept in seconds.
+          </p>
+          
+          <p
+            style={{
+              fontSize: "clamp(16px, 4vw, 25px)",
+              marginBottom: "35px",
+              lineHeight: "1.5",
+              textShadow: "0 0 6px #000",
+              opacity: 0.95,
+            }}
+          >
+            This is an early version. Your feedback helps shape the future.🤝
           </p>
 
           {/* CTA */}

@@ -9,7 +9,6 @@ export default function ThreeDResult() {
   const isMobile = window.innerWidth <= 768;
   const location = useLocation();
   const navigate = useNavigate();
-  
 
   const [showFeedback, setShowFeedback] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -36,6 +35,15 @@ export default function ThreeDResult() {
     navigate("/imaginate/final-showcase");
   };
 
+  const handleNextStep = () => {
+    const feedbackGiven = localStorage.getItem("imaginate_feedback_given");
+    if (!feedbackGiven) {
+      setShowFeedback(true);
+    } else {
+      goToFinal();
+    }
+  };
+
   const submitFeedback = async () => {
     setIsSubmitting(true);
 
@@ -51,6 +59,9 @@ export default function ThreeDResult() {
         source: "quick_modal",
       });
     }
+
+    // Mark feedback as submitted
+    localStorage.setItem("imaginate_feedback_given", "true");
 
     // Fade content
     setTimeout(() => setShowSuccess(true), 300);
@@ -106,11 +117,12 @@ export default function ThreeDResult() {
 
         {/* RIGHT CONTENT */}
         <div style={{ flex: 1 }}>
-          <h1 style={{ 
-            fontSize: isMobile ? "34px" : "65px", 
-            fontWeight: "900",
-            marginBottom: "10px",
-            textAlign: isMobile ? "center" : "left",
+          <h1
+            style={{
+              fontSize: isMobile ? "34px" : "65px",
+              fontWeight: "900",
+              marginBottom: "10px",
+              textAlign: isMobile ? "center" : "left",
             }}
           >
             {fake.title}
@@ -141,34 +153,21 @@ export default function ThreeDResult() {
               ))}
             </ul>
           </div>
-           
-          <div style={{
-            marginTop: "25px",
-            display: "flex", 
-            gap: "15px",
-            flexDirection: isMobile ? "column" : "row",
-            width: isMobile ? "100%" : "auto",
-           }}
+
+          <div
+            style={{
+              marginTop: "25px",
+              display: "flex",
+              gap: "15px",
+              flexDirection: isMobile ? "column" : "row",
+              width: isMobile ? "100%" : "auto",
+            }}
           >
-            <button
-              onClick={handleModify}
-              style={btn.secondary}
-            >
+            <button onClick={handleModify} style={btn.secondary}>
               Modify
             </button>
-          <div style={{
-            marginTop: "25px",
-            display: "flex", 
-            gap: "15px",
-            flexDirection: isMobile ? "column" : "row",
-            width: isMobile ? "100%" : "auto",
-           }}
-          >
-          </div>
-            <button
-              onClick={() => setShowFeedback(true)}
-              style={btn.primary}
-            >
+
+            <button onClick={handleNextStep} style={btn.primary}>
               Next Step →
             </button>
           </div>
@@ -182,36 +181,33 @@ export default function ThreeDResult() {
 
           <div style={styles.modal}>
             <div style={{ textAlign: "right" }}>
-              <button
-                onClick={goToFinal}
-                style={styles.close}
-              >
+              <button onClick={goToFinal} style={styles.close}>
                 ✕
               </button>
             </div>
 
-            <h2 
+            <h2
               style={{
                 fontSize: "38px",
                 fontWeight: "800",
                 color: "white",
                 textAlign: "center",
-                transition: "all 0.17s ease",
               }}
             >
               {showSuccess ? "Thank you ✨" : "Quick feedback"}
             </h2>
-            {!showSuccess && (
-            <p
-              style={{
-              textAlign: "center",
-              marginTop: "6px",
-              color: "rgba(255,255,255,0.8)",
-              fontSize: "21px",
-             }}
-            >
-              Help us improve Imaginate. How was your result? 😄
-            </p>
+
+            {!showSuccess && ( 
+              <p 
+                style={{ 
+                  textAlign: "center", 
+                  marginTop: "6px", 
+                  color: "rgba(255,255,255,0.8)", 
+                  fontSize: "21px", 
+                }} 
+              > 
+                Help us improve Imaginate. How was your result? 😄 
+              </p> 
             )}
 
             {!showSuccess ? (
@@ -228,7 +224,6 @@ export default function ThreeDResult() {
                   onClick={submitFeedback}
                   style={{
                     ...styles.button,
-                    transform: isSubmitting ? "scale(0.96)" : "scale(1)",
                     opacity: isSubmitting ? 0.85 : 1,
                   }}
                 >
@@ -236,11 +231,13 @@ export default function ThreeDResult() {
                 </button>
               </>
             ) : (
-                <div style={styles.successWrap}>
+              <div style={styles.successWrap}>
                 <div style={styles.glow} />
                 <div style={styles.check}>✓</div>
                 <p style={styles.successText}>
-                  Feedback received<br />Thank you
+                  Feedback received
+                  <br />
+                  Thank you
                 </p>
               </div>
             )}
@@ -300,17 +297,6 @@ const styles = {
     color: "white",
     cursor: "pointer",
   },
-  title: {
-    textAlign: "center",
-    fontWeight: "700",
-    fontSize: "40px",
-  },
-  subtitle: {
-    textAlign: "center",
-    opacity: 0.85,
-    marginBottom: "15px",
-    fontSize: "20px",
-  },
   textarea: {
     width: "100%",
     height: "110px",
@@ -331,7 +317,6 @@ const styles = {
     color: "white",
     fontWeight: "600",
     cursor: "pointer",
-    transition: "transform 100ms ease-out, opacity 100ms ease-out",
   },
   successWrap: {
     marginTop: "30px",
@@ -339,13 +324,10 @@ const styles = {
     flexDirection: "column",
     alignItems: "center",
     gap: "10px",
-    animation: "popIn 0.25s ease forwards",
   },
-
   glow: {
     width: "80px",
     height: "80px",
-    margin: "0 auto",
     borderRadius: "50%",
     background:
       "radial-gradient(circle, rgba(80,120,255,0.4), transparent)",
@@ -353,25 +335,9 @@ const styles = {
   check: {
     fontSize: "36px",
     marginTop: "-55px",
-    opacity: 0.95,
   },
   successText: {
     marginTop: "15px",
     opacity: 0.9,
   },
 };
-
-<style>
-{`
-@keyframes popIn {
-  from {
-    opacity: 0;
-    transform: scale(0.97);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1.03);
-  }
-}
-`}
-</style>

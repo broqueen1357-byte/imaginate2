@@ -39,14 +39,14 @@ const features = [
   "Smart touch panel",
   "Wireless power loop",
   "Electrical damage & Danger detection device",
-  "Futuristic smart housework gloves",
-  "Mind-to-design head device",
+  "Futuristic smart housework ",
+  "Mind-to-design device",
   "Smart child safety monitoring device",
-  "Construction site safety system (Smart helmets)",
-  "Futuristic smart kitchen holder",
+  "Consider site safety system ",
+  "Futuristic smart holder think device",
   "Smart classroom with choice-based learning",
   "Mind-controlled AI device (object control)",
-  "Futuristic mini bottle(Bottle + Glass)",
+  "Futuristic mini device that change the stress to carry old product everywhere",
 ];
 
 export function generateFakeOutput(prompt = "") {

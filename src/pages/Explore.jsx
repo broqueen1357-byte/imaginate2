@@ -1,199 +1,284 @@
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+/* ---------- STATIC FAKE CONCEPTS (MVP) ---------- */
+const fakeConcepts = [
+  {
+    id: 1,
+    title: "HoloDesign Workspace",
+    tag: "AI • Workspace",
+    image: "/fake/futuristic/mind to design_01.png",
+    description:
+      "A futuristic holographic workspace designed for creators and engineers.",
+    features: ["Hologram UI", "Gesture Control", "Immersive Design Flow"],
+  },
+  {
+    id: 2,
+    title: "NeuroLuxe Smart Sofa",
+    tag: "Home • Comfort",
+    image: "/fake/futuristic/levita sofa_01.png",
+    description:
+      "A next-gen sofa that adapts posture and comfort using neural sensors.",
+    features: ["Posture AI", "Adaptive Comfort", "Health Monitoring"],
+  },
+  {
+    id: 3,
+    title: "Smart Impact Gloves",
+    tag: "Wearable • Safety",
+    image: "/fake/futuristic/glove 2_01.png",
+    description:
+      "Protective gloves enhanced with impact detection and force feedback.",
+    features: ["Impact Sensors", "Haptic Feedback", "AR Training Support"],
+  },
+  {
+    id: 4,
+    title: "AuraVision Helmet",
+    tag: "Wearable • AR",
+    image: "/fake/futuristic/construction site safety_01.png",
+    description:
+      "An AR helmet for industrial and creative applications.",
+    features: ["AR Overlay", "Eye Tracking", "Voice Commands"],
+  },
+  {
+    id: 5,
+    title: "PulseFit Smart Jacket",
+    tag: "Fashion • Health",
+    image: "/fake/futuristic/smart jacket_01.png",
+    description:
+      "A smart jacket that tracks vitals and adapts to climate conditions.",
+    features: ["Health Sensors", "Thermal Control", "Minimal Design"],
+  },
+];
 
 export default function Explore() {
+  const navigate = useNavigate();
+  const [activeConcept, setActiveConcept] = useState(null);
+
   return (
     <div
       style={{
-        width: "100%",
         minHeight: "100vh",
-        background: "radial-gradient(circle at center, #050b18, #000)",
-        padding: "20px",
-        color: "white",
-        overflowY: "auto", // ⭐ SCROLL ENABLED
+        background: "radial-gradient(circle at top, #050b18, #000)",
+        color: "#e6f7ff",
+        padding: "80px 24px",
+        fontFamily:
+          "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
       }}
     >
-      {/* MAIN CARD */}
-      <div
-        style={{
-          width: "95%",
-          maxWidth: "1100px",
-          margin: "0 auto",
-          padding: "40px",
-          borderRadius: "25px",
-          background: "rgba(0,0,0,0.35)",
-          border: "1px solid rgba(80,180,255,0.40)",
-          boxShadow: "0 0 25px rgba(0,160,255,0.45)",
-          textAlign: "center",
-          backdropFilter: "blur(4px)",
-        }}
-      >
-        {/* TITLE */}
+      {/* ---------- HEADER ---------- */}
+      <div style={{ textAlign: "center", marginBottom: 55 }}>
         <h1
           style={{
-            fontSize: "45px",
-            fontWeight: "700",
-            marginBottom: "5px",
-            color: "#6ecbff",
-            textShadow: "0 0 25px #3db7ff",
+            fontSize: 42,
+            fontWeight: 800,
+            background: "linear-gradient(90deg,#4ecbff,#00aaff)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            marginBottom: 12,
           }}
         >
-          Explore Imaginate
+          Explore Concepts
         </h1>
 
-        {/* SUBTEXT */}
-        <p
-          style={{
-            fontSize: "25px",
-            marginBottom: "45px",
-            color: "#e0e0e0",
-            textShadow: "0 0 10px black",
-          }}
-        >
-          See how simple ideas turn into clear visual concept.
+        <p style={{ color: "#9fe8ff", maxWidth: 600, margin: "0 auto" }}>
+          A glimpse of what Imaginate can create today.
         </p>
+      </div>
 
-        {/* 3-CARD GRID */}
+      {/* ---------- GRID ---------- */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+          gap: 24,
+          maxWidth: 1100,
+          margin: "0 auto",
+        }}
+      >
+        {fakeConcepts.map((concept) => (
+          <div
+            key={concept.id}
+            onClick={() => setActiveConcept(concept)}
+            style={{
+              cursor: "pointer",
+              borderRadius: 18,
+              overflow: "hidden",
+              background: "rgba(255,255,255,0.04)",
+              border: "1px solid rgba(78,203,255,0.15)",
+              transition: "all 0.3s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "translateY(-6px)";
+              e.currentTarget.style.boxShadow =
+                "0 0 30px rgba(78,203,255,0.25)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.boxShadow = "none";
+            }}
+          >
+            <img
+              src={concept.image}
+              alt={concept.title}
+              style={{ width: "100%", height: 180, objectFit: "cover" }}
+            />
+
+            <div style={{ padding: 16 }}>
+              <h3 style={{ margin: "0 0 6px", fontSize: 18 }}>
+                {concept.title}
+              </h3>
+              <span style={{ fontSize: 13, color: "#9fe8ff" }}>
+                {concept.tag}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* ---------- MODAL ---------- */}
+      {activeConcept && (
         <div
+          onClick={() => setActiveConcept(null)}
           style={{
-            width: "100%",
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-            gap: "25px",
-            marginBottom: "70px", // ⭐ SPACE ABOVE FOOTER
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,0.65)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000,
           }}
         >
-          {/* CARD 1 */}
           <div
+            onClick={(e) => e.stopPropagation()}
             style={{
-              padding: "18px",
-              borderRadius: "18px",
-              border: "1px solid rgba(80,180,255,0.35)",
-              background: "rgba(0,0,0,0.35)",
-              boxShadow: "0 0 18px rgba(0,160,255,0.35)",
-              textAlign: "left",
+              background: "#050b18",
+              borderRadius: 20,
+              maxWidth: 520,
+              width: "90%",
+              padding: 24,
+              border: "1px solid rgba(78,203,255,0.25)",
             }}
           >
             <img
-              src="/god.png"
-              alt="Smartwatch"
+              src={activeConcept.image}
+              alt={activeConcept.title}
               style={{
                 width: "100%",
-                borderRadius: "12px",
-                marginBottom: "12px",
+                borderRadius: 14,
+                marginBottom: 16,
               }}
             />
 
-            <h2 style={{ fontSize: "25px", fontWeight: "700" }}>
-              Futuristic Smartwatch
-            </h2>
-
-            <p style={{ color: "#ff59d4", marginTop: "6px", fontSize: "20px" }}>
-              A minimal AI-powered wearable concept designed for 2030
+            <h2 style={{ marginBottom: 8 }}>{activeConcept.title}</h2>
+            <p style={{ color: "#cfeff7", fontSize: 14 }}>
+              {activeConcept.description}
             </p>
-          </div>
 
-          {/* CARD 2 */}
-          <div
-            style={{
-              padding: "18px",
-              borderRadius: "18px",
-              border: "1px solid rgba(80,180,255,0.35)",
-              background: "rgba(0,0,0,0.35)",
-              boxShadow: "0 0 18px rgba(0,160,255,0.35)",
-              textAlign: "left",
-            }}
-          >
-            <img
-              src="/god3.png"
-              alt="Cap Umbrella"
-              style={{
-                width: "100%",
-                borderRadius: "12px",
-                marginBottom: "12px",
-              }}
-            />
+            <ul style={{ marginTop: 12, paddingLeft: 18 }}>
+              {activeConcept.features.map((f, i) => (
+                <li key={i} style={{ fontSize: 13, color: "#9fe8ff" }}>
+                  {f}
+                </li>
+              ))}
+            </ul>
 
-            <h2 style={{ fontSize: "25px", fontWeight: "700" }}>
-              Electronic Cap Umbrella
-            </h2>
-
-            <p style={{ color: "#ff59d4", marginTop: "6px", fontSize: "20px" }}>
-              A smart cap that deploys instant sun protection with one tap
-            </p>
-          </div>
-
-          {/* CARD 3 */}
-          <div
-            style={{
-              padding: "18px",
-              borderRadius: "18px",
-              border: "1px solid rgba(80,180,255,0.35)",
-              background: "rgba(0,0,0,0.35)",
-              boxShadow: "0 0 18px rgba(0,160,255,0.35)",
-              textAlign: "left",
-            }}
-          >
-            <img
-              src="/god2.png"
-              alt="Smart Table"
-              style={{
-                width: "100%",
-                borderRadius: "12px",
-                marginBottom: "12px",
-              }}
-            />
-
-            <h2 style={{ fontSize: "25px", fontWeight: "700" }}>
-              Smart Classroom Table
-            </h2>
-
-            <p style={{ color: "#ff59d4", marginTop: "6px", fontSize: "20px" }}>
-              An adaptive study desk that supports posture, notes, and focus.
-            </p>
-          </div>
-        </div>
-
-        {/* FOOTER CARD */}
-        <div
-          style={{
-            padding: "25px",
-            borderRadius: "18px",
-            background: "rgba(0,0,0,0.35)",
-            border: "1px solid rgba(80,180,255,0.4)",
-            boxShadow: "0 0 18px rgba(0,160,255,0.4)",
-            marginTop: "10px", // ⭐ MOVES FOOTER DOWN
-            marginBottom: "10px", // ⭐ EXTRA SPACE UNDER FOOTER
-          }}
-        >
-          <h2
-            style={{
-              fontSize: "40px",
-              fontWeight: "700",
-              marginTop: "30px",
-              marginBottom: "20px",
-            }}
-          >
-            Your ideas can shape the future
-          </h2>
-
-          <Link to="/imaginate">
             <button
+              onClick={() => navigate("/imaginate")}
               style={{
-                padding: "14px 40px",
-                fontSize: "18px",
-                fontWeight: "700",
-                borderRadius: "15px",
-                background: "linear-gradient(90deg, #009dff, #00d5ff)",
-                color: "black",
+                marginTop: 20,
+                width: "100%",
+                padding: "14px 0",
+                fontSize: 16,
+                fontWeight: 700,
+                borderRadius: 12,
                 border: "none",
                 cursor: "pointer",
-                boxShadow: "0 0 20px rgba(0,160,255,0.6)",
+                color: "#001018",
+                background:
+                  "linear-gradient(90deg,#4ecbff,#00aaff)",
               }}
             >
-              Start With Your Idea
+              Create something like this
             </button>
-          </Link>
+          </div>
         </div>
+      )}
+
+      {/* ---------- ABOUT SECTION ---------- */}
+      <div
+        style={{
+          marginTop: 70,
+          paddingTop: 30,
+          borderTop: "1px solid rgba(78,203,255,0.15)",
+          maxWidth: 900,
+          marginLeft: "auto",
+          marginRight: "auto",
+          textAlign: "center",
+        }}
+      >
+        <h2
+          style={{
+            fontSize: 40,
+            fontWeight: 800,
+            marginBottom: 20,
+            background: "linear-gradient(90deg,#4ecbff,#00aaff)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+        >
+          About Imaginate
+        </h2>
+
+        <p
+          style={{
+            fontSize: 20,
+            color: "#cfeff7",
+            lineHeight: 1.7,
+            maxWidth: 720,
+            margin: "0 auto 18px",
+          }}
+        >
+          Imaginate is an experimental AI-powered concept engine.
+          You describe an idea — a product, a gadget, a vision — and
+          Imaginate transforms it into a visual concept.
+        </p>
+
+        <p
+          style={{
+            fontSize: 18,
+            color: "#9fe8ff",
+            lineHeight: 1.6,
+            maxWidth: 720,
+            margin: "0 auto 18px",
+          }}
+        >
+          This is not about perfection.
+          It’s about <b>speed</b>, <b>clarity</b>, and unlocking imagination.
+        </p>
+
+        <p
+          style={{
+            fontSize: 16,
+            color: "#94cbe8",
+            fontStyle: "italic",
+            marginBottom: 28,
+          }}
+        >
+          Every concept you see here was imagined first — then visualized.
+        </p>
+
+        <p
+          style={{
+            fontSize: 15,
+            color: "#7fbad6",
+            maxWidth: 600,
+            margin: "0 auto",
+          }}
+        >
+          Imaginate is in early development.
+          Your ideas, feedback, and curiosity directly shape what it becomes next.
+        </p>
       </div>
     </div>
   );

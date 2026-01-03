@@ -1,0 +1,17 @@
+/* VideoPreview.css */
+
+/* Stars movement animation */
+@keyframes starMove {
+  0% { background-position: 0 0; }
+  100% { background-position: 300px 300px; }
+}
+
+@keyframes starMoveReverse {
+  0% { background-position: 0 0; }
+  100% { background-position: -500px -500px; }
+}
+
+@keyframes starFade {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}

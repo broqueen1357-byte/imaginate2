@@ -25,6 +25,8 @@ import SavedImaginate from "./pages/imaginate/SavedImaginate";
 // ADMIN
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminRoute from "./components/AdminRoute";
+import VideoPreview from "./pages/imaginate/VideoPreview";
+import ConceptFallback from "./pages/imaginate/ConceptFallback";
 
 export default function App() {
   return (
@@ -66,10 +68,13 @@ export default function App() {
             </ProtectedRoute>
           }
         >
+          <Route path="concept-fallback" element={<ConceptFallback
+          userPrompt={location.state?.prompt} />} />
           <Route path="loading" element={<Loading />} />
           <Route path="3d-result" element={<ThreeDResult />} />
           <Route path="summary" element={<FinalSummary />} />
           <Route path="feedback" element={<FeedBack />} />
+          <Route path="video-preview" element={<VideoPreview />} />
           <Route path="final-showcase" element={<FinalShowcase />} />
           <Route path="saved" element={<SavedImaginate />} />
         </Route>

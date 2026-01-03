@@ -1,14 +1,14 @@
+// src/pages/Imaginate.jsx
 import { useState } from "react";
 import { Link, useNavigate, Outlet, useLocation } from "react-router-dom";
+import { fakeConcepts } from "../data/fakeConcepts";
 
 export default function Imaginate() {
   const [image, setImage] = useState(null);
   const [dragActive, setDragActive] = useState(false);
-
   const navigate = useNavigate();
   const location = useLocation();
   const isNested = location.pathname !== "/imaginate";
-
   const isMobile = window.innerWidth <= 768;
 
   // IMAGE UPLOAD
@@ -25,23 +25,37 @@ export default function Imaginate() {
   };
 
   // GENERATE
-  const handleGenerate = () => {
-    const prompt = document.getElementById("ideaInput").value;
+const handleGenerate = () => {
+  const prompt = document.getElementById("ideaInput").value.trim();
 
-    if (!prompt.trim()) {
-      alert("Please describe your idea.");
-      return;
-    }
+  if (!prompt || !image) {
+    alert("Prompt and image required");
+    return;
+  }
 
-    if (!image) {
-      alert("Please upload an image before generating.");
-      return;
-    }
+  // 🔥 CLEAR OLD STATE
+  sessionStorage.removeItem("imaginate_fallback_concepts");
+  sessionStorage.removeItem("imaginate_selected_concept");
 
-    navigate("/imaginate/loading", {
-      state: { prompt, uploadedImage: image },
-    });
-  };
+  const matchedConcept = fakeConcepts.find((c) =>
+    prompt.toLowerCase().includes(c.keyword.toLowerCase())
+  );
+
+  sessionStorage.setItem(
+    "imaginate_generation",
+    JSON.stringify({
+      prompt,
+      uploadedImage: image,
+      concept: matchedConcept || null,
+    })
+  );
+
+  if (matchedConcept) {
+    navigate("/imaginate/loading");
+  } else {
+    navigate("/imaginate/concept-fallback");
+  }
+};
 
   return (
     <div
@@ -104,7 +118,6 @@ export default function Imaginate() {
               background: "rgba(0,0,0,0.35)",
               border: "1px solid rgba(80,180,255,0.40)",
               boxShadow: "0 0 25px rgba(0,160,255,0.45)",
-              backdropFilter: "blur(4px)",
             }}
           >
             <h2

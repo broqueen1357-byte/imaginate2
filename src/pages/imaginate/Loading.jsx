@@ -1,21 +1,26 @@
 // src/pages/imaginate/Loading.jsx
-
 import { useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Loading() {
   const navigate = useNavigate();
-  const location = useLocation();
 
-  const navState = location.state || {};
+  // Get stored generation data
+  const navState = JSON.parse(
+    sessionStorage.getItem("imaginate_generation") || "{}"
+  );
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigate("/imaginate/3d-result", { state: { ...navState } });
-    }, 2800);
+      navigate("/imaginate/3d-result");
+    }, 2800); // match your previous timing
 
     return () => clearTimeout(timer);
-  }, [navigate, navState]);
+  }, [navigate]);
+
+  const displayPrompt = navState.prompt || (navState.concept && navState.concept.title) || "Your idea";
+
+  const displayImage = navState.uploadedImage || (navState.concept && navState.concept.image) || "/fake/futuristic/universe.png";
 
   return (
     <div style={styles.page}>
@@ -44,9 +49,7 @@ export default function Loading() {
           </div>
 
           <h2 style={styles.h2}>Generating your concept…</h2>
-          <p style={styles.p}>
-            Imaginate AI is crafting visuals from your idea — hold tight.
-          </p>
+          <p style={styles.p}>Imaginate AI is crafting visuals from your idea — hold tight.</p>
 
           <div style={styles.typingRow}>
             <span style={styles.typingText}>Processing</span>
@@ -59,35 +62,22 @@ export default function Loading() {
         {/* Preview */}
         <div style={styles.previewCard}>
           <div style={styles.previewTitle}>Preview</div>
-
           <div style={styles.thumbWrap}>
-            {navState.uploadedImage ? (
-              <img
-                src={navState.uploadedImage}
-                alt="uploaded preview"
-                style={styles.thumb}
-                onError={(e) => {
-                  e.currentTarget.src = "/fake/futuristic/universe.png";
-                }}
-              />
-            ) : (
-              <div style={styles.thumbPlaceholder}>No image</div>
-            )}
+            <img
+              src={displayImage}
+              alt="preview"
+              style={styles.thumb}
+              onError={(e) => {
+                e.currentTarget.src = "/fake/futuristic/universe.png";
+              }}
+            />
           </div>
-
           <div style={styles.promptWrap}>
             <div style={styles.promptLabel}>Prompt</div>
-            <div style={styles.promptText}>
-              {navState.prompt
-                ? navState.prompt
-                : navState.uploadedImage
-                ? "Using uploaded image"
-                : "No prompt provided"}
-            </div>
+            <div style={styles.promptText}>{displayPrompt}</div>
           </div>
-
           <div style={styles.smallNote}>
-            This is a mock generation — visual preview will appear next.
+            {navState.concept ? "Concept chosen: " + navState.concept.title : "Using uploaded image / prompt"}
           </div>
         </div>
       </div>
@@ -96,7 +86,6 @@ export default function Loading() {
 }
 
 /* ---------- styles ---------- */
-
 const styles = {
   page: {
     width: "100%",
@@ -111,17 +100,15 @@ const styles = {
     fontFamily:
       "Inter, system-ui, -apple-system, 'Segoe UI', Roboto",
   },
-
   container: {
     width: "100%",
     maxWidth: 980,
     display: "flex",
     gap: 24,
     margin: "0 auto",
-    flexWrap: "wrap",            // 🔑 mobile stack
+    flexWrap: "wrap",
     justifyContent: "center",
   },
-
   loaderCard: {
     flex: "1 1 520px",
     background:
@@ -135,14 +122,12 @@ const styles = {
     alignItems: "center",
     textAlign: "center",
   },
-
   spinnerWrap: {
     position: "relative",
-    width: 96,      // smaller for mobile
+    width: 96,
     height: 96,
     marginBottom: 16,
   },
-
   spinner: {
     width: "100%",
     height: "100%",
@@ -152,7 +137,6 @@ const styles = {
     animation: "spin 1.2s linear infinite",
     boxSizing: "border-box",
   },
-
   spinnerGlow: {
     position: "absolute",
     inset: 6,
@@ -160,33 +144,28 @@ const styles = {
     animation: "pulse 2.6s ease-in-out infinite",
     pointerEvents: "none",
   },
-
   h2: {
     margin: 0,
     fontSize: 20,
     fontWeight: 700,
     color: "#bff6ff",
   },
-
   p: {
     marginTop: 6,
     fontSize: 14,
     color: "#cfeff7",
     opacity: 0.9,
   },
-
   typingRow: {
     marginTop: 14,
     display: "flex",
     alignItems: "center",
     gap: 6,
   },
-
   typingText: {
     color: "#9fe8ff",
     fontWeight: 700,
   },
-
   dot: {
     width: 7,
     height: 7,
@@ -195,7 +174,6 @@ const styles = {
     borderRadius: "50%",
     animation: "dots 0.9s infinite",
   },
-
   previewCard: {
     flex: "1 1 320px",
     borderRadius: 14,
@@ -206,60 +184,53 @@ const styles = {
     boxShadow: "0 8px 30px rgba(0,120,140,0.05)",
     display: "flex",
     flexDirection: "column",
+    alignItems: "center",
+    transition: "box-shadow 0.3s ease",
   },
-
   previewTitle: {
     color: "#9fe8ff",
     fontWeight: 800,
     marginBottom: 10,
   },
-
   thumbWrap: {
     width: "100%",
-    height: 160,
+    height: 180,
     borderRadius: 10,
     overflow: "hidden",
     border: "1px solid rgba(255,255,255,0.04)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    background: "#081017",
     marginBottom: 10,
+    boxShadow: "0 4px 16px rgba(78,203,255,0.2)",
+    transition: "transform 0.3s ease, box-shadow 0.3s ease",
   },
-
   thumb: {
     width: "100%",
     height: "100%",
     objectFit: "cover",
+    display: "block",
   },
-
-  thumbPlaceholder: {
-    color: "#94cbe8",
-    opacity: 0.6,
-    fontWeight: 700,
-  },
-
   promptWrap: {
     marginTop: 4,
+    textAlign: "center",
   },
-
   promptLabel: {
     fontSize: 12,
     color: "#9fe8ff",
     fontWeight: 700,
     marginBottom: 4,
   },
-
   promptText: {
     color: "#cfeff7",
     lineHeight: 1.4,
     fontSize: 13,
   },
-
   smallNote: {
     marginTop: 10,
     fontSize: 12,
     color: "#bcdff0",
     opacity: 0.8,
+    textAlign: "center",
   },
 };

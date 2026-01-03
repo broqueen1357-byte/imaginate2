@@ -60,6 +60,7 @@ export function generateFakeOutput(prompt = "") {
     title: "Futuristic Concept Generated",
     promptUsed: prompt || "User concept idea",
     image: img,
+    video: null, // intentional
     features: selected,
     description:
       "A refined futuristic product concept combining intelligent automation, advanced engineering and user-centric design.",

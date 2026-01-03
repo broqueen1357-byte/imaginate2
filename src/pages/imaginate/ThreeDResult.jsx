@@ -2,73 +2,54 @@
 
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { supabase } from "../../supabase/supabaseClient";
-import { generateFakeOutput } from "../../utils/fakeOutputs";
+import { fakeConcepts } from "../../data/fakeConcepts";
 
 export default function ThreeDResult() {
   const isMobile = window.innerWidth <= 768;
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [showFeedback, setShowFeedback] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [feedback, setFeedback] = useState("");
-  const [rating, setRating] = useState(5);
+  // 🔑 SINGLE SOURCE OF TRUTH
+  const generation = JSON.parse(
+    sessionStorage.getItem("imaginate_generation")
+  );
+
+  // ================= FINAL selectedConcept LOGIC =================
+  const [selectedConcept] = useState(() => {
+    // 1️⃣ Explicitly passed (rare, but safe)
+    if (location.state?.concept) {
+      return location.state.concept;
+    }
+
+    // 2️⃣ Selected from fallback OR matched earlier
+    if (generation?.concept) {
+      return generation.concept;
+    }
+
+    // 3️⃣ Absolute safety fallback (never random)
+    return fakeConcepts[0];
+  });
 
   const userPrompt =
+    generation?.prompt ||
     location.state?.prompt ||
-    sessionStorage.getItem("imaginate_prompt") ||
     "Your creative idea";
 
-  const [fake] = useState(() => generateFakeOutput(userPrompt));
-
   const handleModify = () => {
-    navigate("/imaginate", { state: { fake } });
+    navigate("/imaginate");
   };
 
   const goToFinal = () => {
     sessionStorage.setItem(
-      "imaginate_final_data",
-      JSON.stringify(fake)
+      "imaginate_selected_concept",
+      JSON.stringify(selectedConcept)
     );
-    navigate("/imaginate/final-showcase");
+    navigate("/imaginate/video-preview");
   };
-
-  const handleNextStep = () => {
-    const feedbackGiven = localStorage.getItem("imaginate_feedback_given");
-    if (!feedbackGiven) {
-      setShowFeedback(true);
-    } else {
-      goToFinal();
-    }
-  };
-
-  const submitFeedback = async () => {
-    setIsSubmitting(true);
-
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (user) {
-      await supabase.from("feedback").insert({
-        user_id: user.id,
-        message: feedback || "No written feedback",
-        rating: rating === 0 ? null : rating,
-        source: "quick_modal",
-      });
-    }
-
-    // Mark feedback as submitted
-    localStorage.setItem("imaginate_feedback_given", "true");
-
-    // Fade content
-    setTimeout(() => setShowSuccess(true), 300);
-
-    // Navigate after animation
-    setTimeout(goToFinal, 1200);
-  };
+  
+  const handleNextStep =() => {
+    goToFinal();
+  }
 
   return (
     <div
@@ -104,7 +85,7 @@ export default function ThreeDResult() {
           }}
         >
           <img
-            src={fake.image}
+            src={selectedConcept.image}
             alt="Generated Concept"
             style={{
               width: "100%",
@@ -125,7 +106,7 @@ export default function ThreeDResult() {
               textAlign: isMobile ? "center" : "left",
             }}
           >
-            {fake.title}
+            {selectedConcept.title}
           </h1>
 
           <p
@@ -137,18 +118,17 @@ export default function ThreeDResult() {
               textAlign: isMobile ? "center" : "left",
             }}
           >
-            {fake.description}
+            {selectedConcept.description}
           </p>
 
           <div style={{ marginTop: "20px" }}>
             <h3 style={{ opacity: 0.8 }}>Prompt Used</h3>
-            <p style={{ fontSize: "20px" }}>{fake.promptUsed}</p>
           </div>
 
           <div>
             <h3 style={{ opacity: 0.8 }}>Key Features</h3>
             <ul style={{ fontSize: "20px", lineHeight: "1.8" }}>
-              {fake.features.map((f, i) => (
+              {selectedConcept.features.map((f, i) => (
                 <li key={i}>{f}</li>
               ))}
             </ul>
@@ -173,81 +153,9 @@ export default function ThreeDResult() {
           </div>
         </div>
       </div>
-
-      {/* ================= MODAL ================= */}
-      {showFeedback && (
-        <>
-          <div style={styles.overlay} />
-
-          <div style={styles.modal}>
-            <div style={{ textAlign: "right" }}>
-              <button onClick={goToFinal} style={styles.close}>
-                ✕
-              </button>
-            </div>
-
-            <h2
-              style={{
-                fontSize: "38px",
-                fontWeight: "800",
-                color: "white",
-                textAlign: "center",
-              }}
-            >
-              {showSuccess ? "Thank you ✨" : "Quick feedback"}
-            </h2>
-
-            {!showSuccess && ( 
-              <p 
-                style={{ 
-                  textAlign: "center", 
-                  marginTop: "6px", 
-                  color: "rgba(255,255,255,0.8)", 
-                  fontSize: "21px", 
-                }} 
-              > 
-                Help us improve Imaginate. How was your result? 😄 
-              </p> 
-            )}
-
-            {!showSuccess ? (
-              <>
-                <textarea
-                  value={feedback}
-                  onChange={(e) => setFeedback(e.target.value)}
-                  placeholder="Write your feedback..."
-                  style={styles.textarea}
-                  disabled={isSubmitting}
-                />
-
-                <button
-                  onClick={submitFeedback}
-                  style={{
-                    ...styles.button,
-                    opacity: isSubmitting ? 0.85 : 1,
-                  }}
-                >
-                  {isSubmitting ? "Sending…" : "Submit & Continue"}
-                </button>
-              </>
-            ) : (
-              <div style={styles.successWrap}>
-                <div style={styles.glow} />
-                <div style={styles.check}>✓</div>
-                <p style={styles.successText}>
-                  Feedback received
-                  <br />
-                  Thank you
-                </p>
-              </div>
-            )}
-          </div>
-        </>
-      )}
     </div>
   );
 }
-
 /* ================= STYLES ================= */
 
 const btn = {
@@ -329,8 +237,7 @@ const styles = {
     width: "80px",
     height: "80px",
     borderRadius: "50%",
-    background:
-      "radial-gradient(circle, rgba(80,120,255,0.4), transparent)",
+    background: "radial-gradient(circle, rgba(80,120,255,0.4), transparent)",
   },
   check: {
     fontSize: "36px",

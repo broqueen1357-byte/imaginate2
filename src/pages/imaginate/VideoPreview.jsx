@@ -1,4 +1,4 @@
-import './videoPreview.css';
+import './VideoPreview.css'
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 

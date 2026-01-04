@@ -172,6 +172,13 @@ const submitFeedback = async () => {
               </button>
             </div>
 
+              <button
+               onClick={() => navigate("/imaginate/feedback")}
+               style={styles.feedbackCta}
+              >
+                🔥 Share more feedback
+              </button>
+
             {/* FIRST SAVE REWARD */}
             <div style={styles.reward}>
               🏆 <strong>Founder Save</strong>
@@ -377,6 +384,17 @@ const styles = {
     display: "block",
     opacity: 0.7,
     marginTop: 4,
+  },
+  feedbackCta: {
+    marginaTop: 20,
+    padding: "12px",
+    borderRadius: 14,
+    background: "rgba(255,255,255,0.12)",
+    border: "1px solid rgba(255,255,255,0.25)",
+    color: "#9fe8ff",
+    fontSize: 16,
+    cursor: "pointer",
+    textShadow: "0 0 6px #00f6ff",
   },
   feedbackBtn: {
     position: "fixed",

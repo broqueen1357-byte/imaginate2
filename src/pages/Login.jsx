@@ -6,6 +6,7 @@ export default function Login() {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
+  const [entered, setEntered] = useState(false);
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isCreating, setIsCreating] = useState(false);
@@ -28,6 +29,7 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setEntered(true);
     setError("");
 
     const { error } = await supabase.auth.signInWithPassword({
@@ -63,6 +65,7 @@ export default function Login() {
   const handleCreateAccount = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setEntered(true);
     setError("");
 
     const { error } = await supabase.auth.signUp({
@@ -101,6 +104,9 @@ export default function Login() {
           marginBottom: "40px",
           color: "#6ecbff",
           textShadow: "0 0 25px #3db7ff",
+          opacity: 0,
+          transform: "translateY(12px)",
+          animation: "fadeup 0.6s ease forwards",
         }}
       >
         IMAGINATE
@@ -113,6 +119,9 @@ export default function Login() {
           borderRadius: "25px",
           background: "rgba(10, 14, 30, 0.85)",
           border: "1px solid rgba(80,180,255,0.55)",
+          opacity: 0,
+          animation: "fadeIn 0.6s ease forwards",
+          animationDelay: "0.2s",
         }}
       >
         <h2 style={{ marginBottom: "25px" }}>
@@ -145,7 +154,7 @@ export default function Login() {
           style={buttonStyle(loading)}
         >
           {loading
-            ? "Please wait..."
+            ? "Entering Imaginate..."
             : isCreating
             ? "Create Account"
             : "Login"}
@@ -196,4 +205,27 @@ const buttonStyle = (loading) => ({
   border: "none",
   cursor: "pointer",
   opacity: loading ? 0.6 : 1,
+  animation: loading ? "none" : "pulse 3.5s ease-in-out infinite",
 });
+const style = document.createElement("style");
+style.innerHTML = `
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+`;
+document.head.appendChild(style);

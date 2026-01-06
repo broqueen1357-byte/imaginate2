@@ -76,8 +76,8 @@ export default function ThreeDResult() {
         {/* LEFT IMAGE */}
         <div
           style={{
-            width: isMobile ? "100%" : "500px",
-            height: isMobile ? "320px" : "550px",
+            width: isMobile ? "150%" : "530px",
+            height: isMobile ? "420px" : "620px",
             borderRadius: "14px",
             overflow: "hidden",
             background: "rgba(255,255,255,0.05)",
@@ -120,6 +120,28 @@ export default function ThreeDResult() {
           >
             {selectedConcept.description}
           </p>
+          <div
+           style={{
+           marginTop: "18px",
+           padding: "14px 18px",
+           borderRadius: "14px",
+           fontSize: "18px",
+           background: "rgba(255,255,255,0.06)",
+           border: "1px solid rgba(120,180,255,0.35)",
+           maxWidth: "520px",
+           }}
+          >
+          <strong style={{ color: "#9dd7ff" }}>
+            Why you’re seeing this
+          </strong>
+          <p style={{ marginTop: "6px", opacity: 0.85 }}>
+           Based on your input, Imaginate interpreted this as a{" "}
+          <strong>
+           {generation?.imaginationType || "concept"}
+          </strong>{" "}
+           and matched it with a close visual reference to help you see your idea.
+          </p>
+          </div>
 
           <div style={{ marginTop: "20px" }}>
             <h3 style={{ opacity: 0.8 }}>Prompt Used</h3>

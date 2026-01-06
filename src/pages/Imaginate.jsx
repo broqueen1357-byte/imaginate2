@@ -6,6 +6,7 @@ import { fakeConcepts } from "../data/fakeConcepts";
 export default function Imaginate() {
   const [image, setImage] = useState(null);
   const [dragActive, setDragActive] = useState(false);
+  const [imaginationType, setImaginationType] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
   const isNested = location.pathname !== "/imaginate";
@@ -26,6 +27,9 @@ export default function Imaginate() {
 
   // GENERATE
 const handleGenerate = () => {
+  if (! imaginationType) { 
+    alert("select what you are imagining first");
+  }
   const prompt = document.getElementById("ideaInput").value.trim();
 
   if (!prompt || !image) {
@@ -47,6 +51,7 @@ const handleGenerate = () => {
       prompt,
       uploadedImage: image,
       concept: matchedConcept || null,
+      imaginationType,
     })
   );
 
@@ -146,6 +151,33 @@ const handleGenerate = () => {
                 outline: "none",
               }}
             />
+            <p style={{ marginBottom: "10px", color: "#a8b8ff", fontSize: "25px" }}>
+              What are you imagining?
+            </p>
+
+            <div style={{ display: "flex", gap: "10px", marginBottom: "25px" }}>
+              {["Product", "Concept", "Visual idea"].map((type) => (
+            <button
+             key={type}
+             onClick={() => setImaginationType(type)}
+             style={{
+             padding: "10px 18px",
+             borderRadius: "20px",
+             border:
+             imaginationType === type
+             ? "1px solid #6ecbff"
+             : "1px solid rgba(255,255,255,0.25)",
+             background:
+             imaginationType === type ? "#6ecbff" : "transparent",
+             color: imaginationType === type ? "#000" : "#fff",
+             cursor: "pointer",
+             fontWeight: 600,
+            }}
+            >
+           {type}
+          </button>
+        ))}
+        </div>
 
             {/* GRID */}
             <div
@@ -239,6 +271,7 @@ const handleGenerate = () => {
 
             <button
               onClick={handleGenerate}
+              disabled={! imaginationType}
               style={{
                 width: "100%",
                 marginTop: "35px",
@@ -246,14 +279,37 @@ const handleGenerate = () => {
                 borderRadius: "15px",
                 fontSize: isMobile ? "18px" : "20px",
                 fontWeight: "700",
-                background: "#7fffd4",
+                background: imaginationType ? "#7fffd4" : "#555",
                 color: "black",
                 border: "none",
-                cursor: "pointer",
+                cursor: imaginationType ? "pointer" : "not-allowed",
+                opacity: imaginationType ? 1 : 0.6,
               }}
             >
-              Generate
+              Generate Visual concept
             </button>
+            <p
+             style={{
+             marginTop: "8px",
+             fontSize: "19px",
+             opacity: 0.7,
+             textAlign: "center",
+             }}
+            >
+              Best results come from clear, single-idea descriptions.
+            </p>
+
+              <h3
+                style={{
+                  fontSize: isMobile ? "22px" : "30px",
+                  fontWeight: 900,
+                  lineHeight: 1.1,
+                  textShadow: "0 0 5px #00f6ff, 0 0 20px #ff00e0",
+                  marginBottom: "10px",
+                }}
+              >
+                Early MVP results are conceptualc explorations, not final outputs.
+              </h3>
           </div>
         </>
       )}

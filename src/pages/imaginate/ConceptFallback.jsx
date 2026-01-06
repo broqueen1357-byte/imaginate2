@@ -33,13 +33,32 @@ export default function ConceptFallback() {
 
   return (
     <div style={styles.page}>
-      <h2 style={styles.title}>
-        We couldn't find a perfect match yet 🤔
-      </h2>
-      <h2 style={styles.Subtitle}>
-        But based on your idea😉, you might like one of these😄
+      <h2
+        style={{
+        fontSize: 34,
+        fontWeight: 800,
+        marginBottom: 12,
+        textAlign: "center",
+        color: "#9fe8ff",
+       }}
+      >
+       Let’s clarify your idea
       </h2>
 
+      <p
+        style={{
+        fontSize: 18,
+        maxWidth: 520,
+        lineHeight: 1.5,
+        opacity: 0.85,
+        textAlign: "center",
+        marginBottom: 40,
+       }}
+      >
+        Your description can go in multiple directions.  
+        Pick the closest one so we generate something aligned.
+      </p>
+      
       <div style={styles.row}>
         {options.map((c) => (
           <div

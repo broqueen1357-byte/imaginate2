@@ -58,7 +58,7 @@ export default function ConceptFallback() {
         Your description can go in multiple directions.  
         Pick the closest one so we generate something aligned.
       </p>
-      
+
       <div style={styles.row}>
         {options.map((c) => (
           <div

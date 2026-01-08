@@ -286,7 +286,7 @@ const handleGenerate = () => {
                 opacity: imaginationType ? 1 : 0.6,
               }}
             >
-              Generate Visual concept
+             Explore
             </button>
             <p
              style={{

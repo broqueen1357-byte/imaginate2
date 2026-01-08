@@ -95,15 +95,14 @@ export default function Landing() {
 
         {/* Animated paragraphs */}
         <h2 className="fade-in" style={{ animationDelay: "0.3s" }}>
-          Turn Ideas Into Stunning 3D Concepts
+          Explore Visual Directions for Your Ideas
         </h2>
-        <p className="fade-in" style={{ animationDelay: "0.6s" }}>
-          Describe your idea. Upload an image. Watch as <b>Imaginate</b>{" "}
-          transforms your vision into a vivid, futuristic concept in seconds.
+        <p className="fade-in" style={{ animationDelay: "0.6s", fontSize: "19px" }}>
+          Describe your idea. Upload an image to explore possible visual interpretations and concept directions
         </p>
-        <p className="fade-in" style={{ animationDelay: "0.9s" }}>
-          <b>Your Vision, Our AI</b> — Every creation you generate shapes the next
-          version of Imaginate. Be part of building the <b>future of creativity</b>.
+        <p className="fade-in" style={{ animationDelay: "0.9s", fontSize: "19px" }}>
+          Imaginate is an early-stage exploration tool designed to help you think visually,
+          not deliver final AI outputs.
         </p>
         <p className="fade-in" style={{ animationDelay: "1.2s" }}>
           Fast. Visual. Intuitive. From imagination to visualization — one click,

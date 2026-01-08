@@ -20,8 +20,8 @@ export default function Home() {
       <div style={styles.content}>
         <h1 style={styles.title}>Welcome to Imaginate</h1>
 
-        <p style={styles.subtitle}>Where imagination turns into reality.</p>
-        <p style={styles.subtitle}>Dream. Create. Build.</p>
+        <p style={styles.subtitle}>Explore visual interpretations of your ideas.</p>
+        <p style={styles.subtitle}>Imaginate helps you see possible visual directions for a concept not final AI outputs.</p>
 
         <div style={styles.buttons}>
           <button

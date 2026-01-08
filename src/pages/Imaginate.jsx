@@ -135,6 +135,10 @@ const handleGenerate = () => {
             >
               Describe your idea or concept
             </h2>
+            <p style={{ marginBottom: "10px", color: "#a8b8ff", fontSize: "19px" }}>
+              Imaginate explores visual interpretations not final AI outputs.
+            </p>
+
 
             <input
               id="ideaInput"
@@ -254,7 +258,7 @@ const handleGenerate = () => {
                     marginBottom: "10px",
                   }}
                 >
-                  Tips from Imaginate AI
+                  Tips for clearer explorations
                 </h3>
                 <p
                   style={{
@@ -308,7 +312,7 @@ const handleGenerate = () => {
                   marginBottom: "10px",
                 }}
               >
-                Early MVP results are conceptualc explorations, not final outputs.
+                Early results are conceptual explorations, not final outputs.
               </h3>
           </div>
         </>

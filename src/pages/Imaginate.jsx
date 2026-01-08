@@ -4,26 +4,12 @@ import { Link, useNavigate, Outlet, useLocation } from "react-router-dom";
 import { fakeConcepts } from "../data/fakeConcepts";
 
 export default function Imaginate() {
-  const [image, setImage] = useState(null);
-  const [dragActive, setDragActive] = useState(false);
+  const [prompt, setPrompt] = useState("");
   const [imaginationType, setImaginationType] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
   const isNested = location.pathname !== "/imaginate";
   const isMobile = window.innerWidth <= 768;
-
-  // IMAGE UPLOAD
-  const handleImageUpload = (e) => {
-    const file = e.target.files?.[0];
-    if (file) setImage(URL.createObjectURL(file));
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    setDragActive(false);
-    const file = e.dataTransfer.files[0];
-    if (file) setImage(URL.createObjectURL(file));
-  };
 
   // GENERATE
 const handleGenerate = () => {
@@ -32,8 +18,8 @@ const handleGenerate = () => {
   }
   const prompt = document.getElementById("ideaInput").value.trim();
 
-  if (!prompt || !image) {
-    alert("Prompt and image required");
+  if (!prompt.trim()) {
+    alert("Describe your imagination first");
     return;
   }
 
@@ -49,7 +35,6 @@ const handleGenerate = () => {
     "imaginate_generation",
     JSON.stringify({
       prompt,
-      uploadedImage: image,
       concept: matchedConcept || null,
       imaginationType,
     })
@@ -112,6 +97,31 @@ const handleGenerate = () => {
             IMAGINATE
           </h1>
 
+          <div
+           style={{
+           maxWidth: "800px",
+           margin: "20px auto 40px",
+           padding: "18px 22px",
+           borderRadius: "16px",
+           background: "rgba(0,0,0,0.3)",
+           border: "1px solid rgba(120,180,255,0.35)",
+           textAlign: "center",
+          }}
+          >
+          <p
+           style={{
+           fontSize: isMobile ? "18px" : "20px",
+           lineHeight: "1.6",
+           color: "#cfe8ff",
+           margin: 0,
+          }}
+          >
+          <strong>Imaginate starts in your mind.</strong><br />
+           Describe a single idea you are imagining.
+           We explore how it could look — not generate final images.
+          </p>
+          </div>
+
           {/* CARD */}
           <div
             style={{
@@ -133,17 +143,16 @@ const handleGenerate = () => {
                 fontWeight: "600",
               }}
             >
-              Describe your idea or concept
+              Describe what you are imagining
             </h2>
-            <p style={{ marginBottom: "10px", color: "#a8b8ff", fontSize: "19px" }}>
-              Imaginate explores visual interpretations not final AI outputs.
-            </p>
 
 
             <input
+              value={prompt}
+              onChange={(e) => setPrompt(e. target. value)}
               id="ideaInput"
               type="text"
-              placeholder="Ex: A sustainable smartwatch that glows when moved…"
+              placeholder="Ex: A city where buildings grow like trees and adapt to people…"
               style={{
                 width: "100%",
                 padding: "15px",
@@ -194,53 +203,6 @@ const handleGenerate = () => {
                 gap: "25px",
               }}
             >
-              {/* UPLOAD */}
-              <div
-                onDragOver={(e) => {
-                  e.preventDefault();
-                  setDragActive(true);
-                }}
-                onDragLeave={() => setDragActive(false)}
-                onDrop={handleDrop}
-                onClick={() => document.getElementById("fileInput").click()}
-                style={{
-                  height: isMobile ? "240px" : "350px",
-                  borderRadius: "20px",
-                  border: `2px dashed ${
-                    dragActive ? "#6ddcff" : "rgba(255,255,255,0.25)"
-                  }`,
-                  background: "rgba(0,0,0,0.25)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  cursor: "pointer",
-                }}
-              >
-                {image ? (
-                  <img
-                    src={image}
-                    alt="preview"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "contain",
-                      borderRadius: "15px",
-                    }}
-                  />
-                ) : (
-                  <span style={{ fontSize: isMobile ? "16px" : "20px" }}>
-                    Drop image or tap to upload
-                  </span>
-                )}
-              </div>
-
-              <input
-                id="fileInput"
-                type="file"
-                accept="image/*"
-                style={{ display: "none" }}
-                onChange={handleImageUpload}
-              />
 
               {/* TIPS */}
               <div
@@ -290,7 +252,7 @@ const handleGenerate = () => {
                 opacity: imaginationType ? 1 : 0.6,
               }}
             >
-             Explore
+              Interpret my imagination
             </button>
             <p
              style={{
@@ -302,18 +264,6 @@ const handleGenerate = () => {
             >
               Best results come from clear, single-idea descriptions.
             </p>
-
-              <h3
-                style={{
-                  fontSize: isMobile ? "22px" : "30px",
-                  fontWeight: 900,
-                  lineHeight: 1.1,
-                  textShadow: "0 0 5px #00f6ff, 0 0 20px #ff00e0",
-                  marginBottom: "10px",
-                }}
-              >
-                Early results are conceptual explorations, not final outputs.
-              </h3>
           </div>
         </>
       )}

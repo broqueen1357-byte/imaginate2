@@ -1,483 +1,322 @@
-// src/pages/imaginate/FinalShowcase.jsx
-import { useLocation, useNavigate } from "react-router-dom";
-import { supabase } from "../../supabase/supabaseClient";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { interpretationModes } from "../../data/interpretationModes";
 
 export default function FinalShowcase() {
-  const location = useLocation();
   const navigate = useNavigate();
 
-  const fake =
-    location.state?.fake ||
-    JSON.parse(sessionStorage.getItem("imaginate_selected_concept"));
+  const [generation, setGeneration] = useState(null);
+  const [conceptData, setConceptData] = useState(null);
 
-  if (!fake) {
-    navigate("/imaginate");
-    return null;
-  }
+  // 🔹 Clarity modal state
+  const [showClarity, setShowClarity] = useState(false);
+  const [clarityText, setClarityText] = useState("");
+  const [claritySent, setClaritySent] = useState(false);
 
-  // ---------------- STATES ----------------
-  const [countdown, setCountdown] = useState(null); // null = inactive
-  const [showFeedback, setShowFeedback] = useState(false);
-  const [feedback, setFeedback] = useState("");
-  const [rating, setRating] = useState(5);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
-
-  // ---------------- INIT FEEDBACK FLOW ----------------
   useEffect(() => {
-    const alreadyGiven =
-      localStorage.getItem("imaginate_feedback_given") === "true";
+    const gen = sessionStorage.getItem("imaginate_generation");
+    const selected = sessionStorage.getItem("imaginate_selected_concept");
 
-    if (alreadyGiven) {
-      setCountdown(null);
+    if (!gen || !selected) {
+      navigate("/imaginate");
       return;
     }
 
-    // start countdown ONLY once
-    setCountdown(3);
-  }, []);
+    setGeneration(JSON.parse(gen));
+    setConceptData(JSON.parse(selected));
+  }, [navigate]);
 
-  // ---------------- COUNTDOWN ----------------
-  useEffect(() => {
-    if (countdown === null) return;
-    if (countdown === 0) {
-      setShowFeedback(true);
-      return;
-    }
+  if (!generation || !conceptData) return null;
 
-    const timer = setTimeout(() => {
-      setCountdown((prev) => prev - 1);
-    }, 1000);
+  const mode = interpretationModes[generation.interpretationMode];
+  const userPrompt = generation.prompt || "Your idea";
 
-    return () => clearTimeout(timer);
-  }, [countdown]);
+  const handleSendClarity = () => {
+    if (!clarityText.trim()) return;
 
-  // ---------------- ACTIONS ----------------
-  const handleDownload = () => {
-    const a = document.createElement("a");
-    a.href = fake.image;
-    a.download = "imaginate-mockup.png";
-    a.click();
+    // 🔒 For now we just acknowledge.
+    // Later this can go to Supabase / email / Notion.
+    setClaritySent(true);
   };
 
-  const handleSave = async () => {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      alert("Please log in first");
-      return;
-    }
-
-    const { error } = await supabase.from("imagination_space").insert([
-      {
-        user_id: user.id,
-        image_url: fake.image,
-        prompt: fake.promptUsed || "Untitled idea",
-      },
-    ]);
-
-    if (error) {
-      alert("Failed to save 😢");
-    } else {
-      alert("🎉 Congratulations! Your idea is saved 😉");
-    }
-  };
-
-const submitFeedback = async () => {
-  setIsSubmitting(true);
-
-  let userId = null;
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (user) userId = user.id;
-
-  const { error } = await supabase.from("feedback").insert({
-    user_id: userId,
-    message: feedback || "No written feedback",
-    rating: rating === 0 ? null : rating,
-    source: "finalshowcase",
-  });
-
-  if (error) console.error("Supabase insert error:", error);
-
-  localStorage.setItem("imaginate_feedback_given", "true");
-  setShowSuccess(true);
-  setTimeout(() => setShowFeedback(false), 1500);
-};
-  // ---------------- UI ----------------
   return (
     <div style={styles.page}>
-      <div style={styles.overlay}>
+      {/* BACKGROUND */}
+      <div style={styles.bgGlow} />
+
+      <div style={styles.container}>
         {/* HEADER */}
-        <div style={styles.header}>
-          <h1 style={styles.title}>
-            Congratulations 🎉
-            <br />
-            <span style={styles.titleSub}>Your idea is now real</span>
-          </h1>
-          <p style={styles.engine}>
-            Crafted using <strong>Imaginate Engine v1.0</strong>
+        <h1 style={styles.title}>This is your interpretation</h1>
+        <p style={styles.subtitle}>
+          Imaginate didn’t design a final product — it interpreted your idea
+          using the <strong>{mode.title}</strong> lens.
+        </p>
+
+        {/* INTERPRETATION CARD */}
+        <div style={styles.card}>
+          <h3 style={styles.cardTitle}>Your idea</h3>
+          <p style={styles.cardText}>{userPrompt}</p>
+        </div>
+
+        {/* MODE EXPLANATION */}
+        <div style={styles.card}>
+          <h3 style={styles.cardTitle}>How Imaginate thought</h3>
+          <p style={styles.cardText}>{mode.description}</p>
+        </div>
+
+        {/* WHAT THIS MEANS */}
+        <div style={styles.cardAlt}>
+          <h3 style={styles.cardTitleAlt}>What this means</h3>
+          <p style={styles.cardTextAlt}>
+            The visuals and concepts you saw are{" "}
+            <strong>one possible way</strong> to understand your idea — not the
+            only answer, and not a finished solution.
           </p>
         </div>
 
-        {/* MAIN */}
-        <div style={styles.main}>
-          <div style={styles.imageZone}>
-            <div style={styles.imageFrame}>
-              <img src={fake.image} alt="concept" style={styles.image} />
-            </div>
-            <p style={styles.imageHint}>
-              This is your generated concept. Save it to keep it forever.
-            </p>
-          </div>
+        {/* ACTIONS */}
+        <div style={styles.actions}>
+          <button style={btn.secondary} onClick={() => navigate("/imaginate")}>
+            Try another idea
+          </button>
 
-          <div style={styles.infoZone}>
-            <div style={styles.meta}>
-              <strong>Prompt</strong>
-              <div style={styles.metaValue}>{fake.promptUsed}</div>
-
-              <div style={{ marginTop: 14 }}>
-                <strong>Category</strong>
-              </div>
-              <div style={styles.metaValue}>
-                {fake.category || "Uncategorized"}
-              </div>
-            </div>
-
-            <div style={styles.actions}>
-              <button
-                onClick={async () => {
-                  await handleSave();
-                  navigate("/imaginate/saved");
-                }}
-                style={styles.saveBtn}
-              >
-                😎 Save to Imaginate
-              </button>
-
-              <button onClick={handleDownload} style={styles.secondaryBtn}>
-                Download Image
-              </button>
-
-              <button
-                onClick={() => navigate("/imaginate")}
-                style={styles.ghostBtn}
-              >
-                Generate Another Idea
-              </button>
-            </div>
-
-              <button
-               onClick={() => navigate("/imaginate/feedback")}
-               style={styles.feedbackCta}
-              >
-                🔥 Share more feedback
-              </button>
-
-            {/* FIRST SAVE REWARD */}
-            <div style={styles.reward}>
-              🏆 <strong>Founder Save</strong>
-              <span style={styles.rewardSub}>
-                You’re among the first creators on Imaginate
-              </span>
-            </div>
-          </div>
+          <button
+            style={btn.primary}
+            onClick={() => navigate("/imaginate")}
+          >
+            Modify this idea →
+          </button>
         </div>
 
-        {/* COUNTDOWN */}
-        {countdown !== null && countdown > 0 && (
-          <div style={styles.countdown}>{countdown}</div>
-        )}
-
-        {/* FEEDBACK POPUP */}
-        {showFeedback && (
-          <div style={styles.feedbackOverlay}>
-            <div style={styles.feedbackBox}>
-              {!showSuccess ? (
-                <>
-                  <h2>You brought this idea to life! 💖</h2>
-                  <h2>Share your thoughts what excited you most about it😃? Your feedback shapes the future of imaginate 💡</h2>
-                  <textarea
-                    value={feedback}
-                    onChange={(e) => setFeedback(e.target.value)}
-                    style={styles.feedbackTextarea}
-                  />
-                  <select
-                    value={rating}
-                    onChange={(e) => setRating(Number(e.target.value))}
-                    style={styles.feedbackSelect}
-                  >
-                    {[1, 2, 3, 4, 5].map((n) => (
-                      <option key={n} value={n}>
-                        {n}
-                      </option>
-                    ))}
-                  </select>
-                  <button
-                    onClick={submitFeedback}
-                    style={styles.feedbackSubmitBtn}
-                  >
-                    Submit Feedback
-                  </button>
-                </>
-              ) : (
-                <h3 style={{ color: "#9fe8ff" }}>
-                  Thanks for your feedback! 💙
-                </h3>
-              )}
-            </div>
-          </div>
-        )}
-
-        <p style={styles.footer}>Imaginate MVP — Alpha</p>
+        {/* CLARITY ENTRY POINT */}
+        <div style={styles.clarityWrap}>
+          <button
+            onClick={() => setShowClarity(true)}
+            style={styles.clarityBtn}
+          >
+            Something unclear?
+          </button>
+        </div>
       </div>
 
-      {/* Animations */}
-      <style>{`
-        @keyframes fadeIn {
-          0% { opacity: 0; }
-          100% { opacity: 1; }
-        }
-        @keyframes slideUp {
-          0% { transform: translateY(40px); opacity: 0; }
-          100% { transform: translateY(0); opacity: 1; }
-        }
-      `}</style>
+      {/* CLARITY MODAL */}
+      {showClarity && (
+        <div style={styles.modalOverlay}>
+          <div style={styles.modal}>
+            {!claritySent ? (
+              <>
+                <h3 style={styles.modalTitle}>Tell us what didn’t make sense</h3>
+                <p style={styles.modalText}>
+                  If something felt confusing, explain it here.  
+                  We’ll use this to make Imaginate clearer.
+                </p>
+
+                <textarea
+                  value={clarityText}
+                  onChange={(e) => setClarityText(e.target.value)}
+                  placeholder="What part felt unclear?"
+                  style={styles.textarea}
+                />
+
+                <div style={styles.modalActions}>
+                  <button
+                    style={btn.secondary}
+                    onClick={() => setShowClarity(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    style={btn.primary}
+                    onClick={handleSendClarity}
+                  >
+                    Send for clarity
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <h3 style={styles.modalTitle}>Got it 👍</h3>
+                <p style={styles.modalText}>
+                  Thanks for sharing. We’ll use this to improve clarity —
+                  not to judge your idea.
+                </p>
+
+                <button
+                  style={{ ...btn.primary, marginTop: 12 }}
+                  onClick={() => {
+                    setShowClarity(false);
+                    setClarityText("");
+                    setClaritySent(false);
+                  }}
+                >
+                  Close
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-/* ---------- STYLES ---------- */
+/* ================= STYLES ================= */
+
 const styles = {
   page: {
     minHeight: "100vh",
-    background: `url("/END.png") center/cover no-repeat`,
+    background: "#070b1a",
     color: "white",
-    padding: "40px 20px",
     position: "relative",
-    overflowX: "hidden",
-  },
-  overlay: {
-    position: "relative",
-    zIndex: 1,
-    background: "rgba(0, 0, 30, 0.55)",
-    minHeight: "100vh",
+    overflow: "hidden",
     padding: "40px 20px",
-  },
-  header: {
-    textAlign: "center",
-    marginBottom: 50,
-  },
-  title: {
-    fontSize: "clamp(34px, 6vw, 56px)",
-    fontWeight: 900,
-    lineHeight: 1.1,
-    textShadow: "0 0 10px #00f6ff, 0 0 20px #ff00e0",
-  },
-  titleSub: {
-    fontSize: "clamp(18px, 3vw, 24px)",
-    opacity: 0.85,
-    fontWeight: 500,
-    textShadow: "0 0 6px #00f6ff, 0 0 12px #ff00e0",
-  },
-  engine: {
-    marginTop: 12,
-    opacity: 0.7,
-    textShadow: "0 0 4px #00f6ff",
-  },
-  main: {
-    maxWidth: 1100,
-    margin: "0 auto",
     display: "flex",
-    gap: 40,
-    flexWrap: "wrap",
     justifyContent: "center",
   },
-  imageZone: {
-    flex: "0 0 360px",
-    textAlign: "center",
+  bgGlow: {
+    position: "absolute",
+    width: "600px",
+    height: "600px",
+    background: "radial-gradient(circle, #7fffd433, transparent 70%)",
+    top: "-200px",
+    right: "-200px",
+    filter: "blur(120px)",
   },
-  imageFrame: {
-    borderRadius: 26,
-    padding: 14,
-    background:
-      "linear-gradient(145deg, rgba(255,255,255,0.15), rgba(255,255,255,0.03))",
-    boxShadow:
-      "0 0 20px #00f6ff, 0 0 40px #ff00e0, 0 20px 60px rgba(0,0,0,0.6)",
-    transition: "0.3s all",
-  },
-  image: {
+  container: {
+    maxWidth: "760px",
     width: "100%",
-    borderRadius: 18,
-    objectFit: "cover",
-    boxShadow: "0 0 12px #00f6ff, 0 0 24px #ff00e0",
+    zIndex: 2,
   },
-  imageHint: {
-    marginTop: 14,
-    opacity: 0.8,
-    fontSize: 20,
-    textShadow: "0 0 4px #00f6ff",
+  title: {
+    fontSize: "42px",
+    fontWeight: 900,
+    marginBottom: 10,
   },
-  infoZone: {
-    flex: 1,
-    minWidth: 280,
-  },
-  meta: {
-    opacity: 0.95,
-    marginBottom: 30,
-    textShadow: "0 0 4px #00f6ff",
-  },
-  metaValue: {
+  subtitle: {
+    fontSize: "18px",
     opacity: 0.85,
-    fontSize: 20,
+    marginBottom: 32,
+    lineHeight: 1.6,
+  },
+  card: {
+    background: "rgba(255,255,255,0.06)",
+    borderRadius: 14,
+    padding: 20,
+    marginBottom: 18,
+    border: "1px solid rgba(120,180,255,0.2)",
+  },
+  cardAlt: {
+    background: "rgba(127,255,212,0.08)",
+    borderRadius: 14,
+    padding: 20,
+    marginBottom: 30,
+  },
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: 800,
+    marginBottom: 8,
+    color: "#9fe8ff",
+  },
+  cardTitleAlt: {
+    fontSize: 18,
+    fontWeight: 800,
+    marginBottom: 8,
+    color: "#7fffd4",
+  },
+  cardText: {
+    fontSize: 15,
+    opacity: 0.85,
+    lineHeight: 1.6,
+  },
+  cardTextAlt: {
+    fontSize: 15,
+    lineHeight: 1.6,
   },
   actions: {
     display: "flex",
-    flexDirection: "column",
     gap: 14,
+    flexWrap: "wrap",
   },
-  saveBtn: {
-    padding: "14px",
-    borderRadius: 14,
+
+  /* 🔹 Clarity */
+  clarityWrap: {
+    marginTop: 24,
+  },
+  clarityBtn: {
+    background: "none",
     border: "none",
-    fontWeight: 800,
-    fontSize: 17,
-    background: "linear-gradient(90deg,#ffe259,#ffa751)",
-    color: "#000",
-    cursor: "pointer",
-    boxShadow: "0 0 8px #ffe259, 0 0 16px #ffa751",
-    transition: "0.3s all",
-  },
-  secondaryBtn: {
-    padding: "14px",
-    borderRadius: 14,
-    fontSize: 17,
-    background: "rgba(255,255,255,0.18)",
-    border: "1px solid rgba(255,255,255,0.3)",
-    color: "white",
-    cursor: "pointer",
-    boxShadow: "0 0 6px #00f6ff, 0 0 12px #ff00e0",
-  },
-  ghostBtn: {
-    padding: "12px",
-    background: "transparent",
-    color: "rgba(255,255,255,0.7)",
-    border: "none",
-    cursor: "pointer",
-    textShadow: "0 0 6px #00f6ff",
-  },
-  reward: {
-    marginTop: 28,
-    padding: "14px",
-    borderRadius: 16,
-    background: "rgba(255,215,0,0.08)",
-    border: "1px solid rgba(255,215,0,0.3)",
-    fontSize: 17,
-    boxShadow: "0 0 8px #ffe259, 0 0 16px #ffa751",
-  },
-  rewardSub: {
-    display: "block",
-    opacity: 0.7,
-    marginTop: 4,
-  },
-  feedbackCta: {
-    marginaTop: 20,
-    padding: "12px",
-    borderRadius: 14,
-    background: "rgba(255,255,255,0.12)",
-    border: "1px solid rgba(255,255,255,0.25)",
     color: "#9fe8ff",
-    fontSize: 16,
     cursor: "pointer",
-    textShadow: "0 0 6px #00f6ff",
+    fontSize: 14,
+    opacity: 0.85,
   },
-  feedbackBtn: {
-    position: "fixed",
-    top: 18,
-    right: 18,
-    padding: "8px 16px",
-    borderRadius: 30,
-    background: "rgba(255,255,255,0.15)",
-    border: "1px solid rgba(255,255,255,0.3)",
-    color: "white",
-    cursor: "pointer",
-    textShadow: "0 0 6px #00f6ff",
-  },
-  countdown: {
-    position: "fixed",
-    top: 20,
-    left: "50%",
-    transform: "translateX(-50%)",
-    fontSize: 36,
-    fontWeight: 700,
-    background: "rgba(0,0,0,0.6)",
-    padding: "12px 24px",
-    borderRadius: 16,
-    zIndex: 1000,
-    color: "#00f6ff",
-    textShadow: "0 0 12px #00f6ff",
-  },
-  feedbackOverlay: {
+
+  /* 🔹 Modal */
+  modalOverlay: {
     position: "fixed",
     inset: 0,
-    background: "rgba(0,0,0,0.7)",
+    background: "rgba(0,0,0,0.6)",
     display: "flex",
-    justifyContent: "center",
     alignItems: "center",
-    zIndex: 1100,
-    animation: "fadeIn 0.5s ease forwards",
+    justifyContent: "center",
+    zIndex: 10,
   },
-  feedbackBox: {
-    background: "#050b18",
-    padding: 24,
+  modal: {
+    background: "#0b1022",
     borderRadius: 16,
-    fontSize: 15,
-    maxWidth: 400,
+    padding: 24,
+    maxWidth: 420,
     width: "90%",
-    textAlign: "center",
-    transform: "translateY(40px)",
-    animation: "slideUp 0.5s ease forwards",
+    border: "1px solid rgba(120,180,255,0.25)",
   },
-  feedbackTextarea: {
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 800,
+    marginBottom: 8,
+  },
+  modalText: {
+    fontSize: 14,
+    opacity: 0.85,
+    marginBottom: 14,
+    lineHeight: 1.5,
+  },
+  textarea: {
     width: "100%",
-    height: 80,
-    marginTop: 12,
-    borderRadius: 8,
-    padding: 8,
-    fontSize: 15,
-    background: "#001018",
-    color: "#9fe8ff",
-    border: "1px solid rgba(78,203,255,0.25)",
+    minHeight: 90,
+    borderRadius: 10,
+    padding: 12,
+    background: "rgba(255,255,255,0.06)",
+    border: "1px solid rgba(120,180,255,0.3)",
+    color: "white",
+    outline: "none",
     resize: "none",
   },
-  feedbackSelect: {
-    padding: 6,
-    borderRadius: 6,
-    border: "1px solid rgba(78,203,255,0.25)",
-    background: "#001018",
-    color: "#9fe8ff",
-  },
-  feedbackSubmitBtn: {
+  modalActions: {
+    display: "flex",
+    gap: 10,
     marginTop: 16,
-    padding: "12px 24px",
-    borderRadius: 12,
+  },
+};
+
+const btn = {
+  primary: {
+    padding: "14px 22px",
+    borderRadius: 14,
+    fontWeight: 700,
     fontSize: 15,
+    background: "#7fffd4",
+    color: "#000",
     border: "none",
     cursor: "pointer",
-    background: "linear-gradient(90deg,#4ecbff,#00aaff)",
-    fontWeight: 700,
-    color: "#001018",
   },
-  footer: {
-    marginTop: 70,
-    textAlign: "center",
-    opacity: 0.6,
-    fontSize: 16,
-    textShadow: "0 0 4px #00f6ff",
+  secondary: {
+    padding: "14px 22px",
+    borderRadius: 14,
+    fontWeight: 700,
+    fontSize: 15,
+    background: "transparent",
+    color: "#7fffd4",
+    border: "1px solid #7fffd4",
+    cursor: "pointer",
   },
 };

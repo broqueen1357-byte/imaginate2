@@ -1,58 +1,14 @@
+// src/pages/Explore.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-/* ---------- STATIC FAKE CONCEPTS (MVP) ---------- */
-const fakeConcepts = [
-  {
-    id: 1,
-    title: "HoloDesign Workspace",
-    tag: "AI • Workspace",
-    image: "/fake/futuristic/mind to design_01.png",
-    description:
-      "A futuristic holographic workspace designed for creators and engineers.",
-    features: ["Hologram UI", "Gesture Control", "Immersive Design Flow"],
-  },
-  {
-    id: 2,
-    title: "NeuroLuxe Smart Sofa",
-    tag: "Home • Comfort",
-    image: "/fake/futuristic/levita sofa_01.png",
-    description:
-      "A next-gen sofa that adapts posture and comfort using neural sensors.",
-    features: ["Posture AI", "Adaptive Comfort", "Health Monitoring"],
-  },
-  {
-    id: 3,
-    title: "Smart Impact Gloves",
-    tag: "Wearable • Safety",
-    image: "/fake/futuristic/glove 2_01.png",
-    description:
-      "Protective gloves enhanced with impact detection and force feedback.",
-    features: ["Impact Sensors", "Haptic Feedback", "AR Training Support"],
-  },
-  {
-    id: 4,
-    title: "AuraVision Helmet",
-    tag: "Wearable • AR",
-    image: "/fake/futuristic/construction site safety_01.png",
-    description:
-      "An AR helmet for industrial and creative applications.",
-    features: ["AR Overlay", "Eye Tracking", "Voice Commands"],
-  },
-  {
-    id: 5,
-    title: "PulseFit Smart Jacket",
-    tag: "Fashion • Health",
-    image: "/fake/futuristic/smart jacket_01.png",
-    description:
-      "A smart jacket that tracks vitals and adapts to climate conditions.",
-    features: ["Health Sensors", "Thermal Control", "Minimal Design"],
-  },
-];
+import { interpretationConcepts } from "../data/interpretationConcepts";
 
 export default function Explore() {
   const navigate = useNavigate();
   const [activeConcept, setActiveConcept] = useState(null);
+
+  // Flatten all concepts into one array for display
+  const allConcepts = Object.values(interpretationConcepts).flat();
 
   return (
     <div
@@ -65,7 +21,7 @@ export default function Explore() {
           "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
       }}
     >
-      {/* ---------- HEADER ---------- */}
+      {/* HEADER */}
       <div style={{ textAlign: "center", marginBottom: 55 }}>
         <h1
           style={{
@@ -79,13 +35,12 @@ export default function Explore() {
         >
           Explore Concepts
         </h1>
-
         <p style={{ color: "#9fe8ff", maxWidth: 600, margin: "0 auto" }}>
-          A glimpse of what Imaginate can create today.
+          A glimpse of visual ideas Imaginate can generate today
         </p>
       </div>
 
-      {/* ---------- GRID ---------- */}
+      {/* GRID */}
       <div
         style={{
           display: "grid",
@@ -95,7 +50,7 @@ export default function Explore() {
           margin: "0 auto",
         }}
       >
-        {fakeConcepts.map((concept) => (
+        {allConcepts.map((concept) => (
           <div
             key={concept.id}
             onClick={() => setActiveConcept(concept)}
@@ -117,25 +72,35 @@ export default function Explore() {
               e.currentTarget.style.boxShadow = "none";
             }}
           >
-            <img
-              src={concept.image}
-              alt={concept.title}
-              style={{ width: "100%", height: 180, objectFit: "cover" }}
-            />
+            <div
+              style={{
+                width: "100%",
+                height: 180,
+                background:
+                  "linear-gradient(135deg, rgba(78,203,255,0.1), rgba(0,170,255,0.1))",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: 16,
+                color: "#9fe8ff",
+              }}
+            >
+              {concept.title}
+            </div>
 
             <div style={{ padding: 16 }}>
               <h3 style={{ margin: "0 0 6px", fontSize: 18 }}>
                 {concept.title}
               </h3>
               <span style={{ fontSize: 13, color: "#9fe8ff" }}>
-                {concept.tag}
+                {concept.description.substring(0, 60)}...
               </span>
             </div>
           </div>
         ))}
       </div>
 
-      {/* ---------- MODAL ---------- */}
+      {/* MODAL */}
       {activeConcept && (
         <div
           onClick={() => setActiveConcept(null)}
@@ -160,28 +125,28 @@ export default function Explore() {
               border: "1px solid rgba(78,203,255,0.25)",
             }}
           >
-            <img
-              src={activeConcept.image}
-              alt={activeConcept.title}
+            <div
               style={{
                 width: "100%",
+                height: 200,
+                background:
+                  "linear-gradient(135deg, rgba(78,203,255,0.1), rgba(0,170,255,0.1))",
                 borderRadius: 14,
                 marginBottom: 16,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: 20,
+                color: "#9fe8ff",
               }}
-            />
+            >
+              {activeConcept.title}
+            </div>
 
             <h2 style={{ marginBottom: 8 }}>{activeConcept.title}</h2>
             <p style={{ color: "#cfeff7", fontSize: 14 }}>
               {activeConcept.description}
             </p>
-
-            <ul style={{ marginTop: 12, paddingLeft: 18 }}>
-              {activeConcept.features.map((f, i) => (
-                <li key={i} style={{ fontSize: 13, color: "#9fe8ff" }}>
-                  {f}
-                </li>
-              ))}
-            </ul>
 
             <button
               onClick={() => navigate("/imaginate")}
@@ -195,8 +160,7 @@ export default function Explore() {
                 border: "none",
                 cursor: "pointer",
                 color: "#001018",
-                background:
-                  "linear-gradient(90deg,#4ecbff,#00aaff)",
+                background: "linear-gradient(90deg,#4ecbff,#00aaff)",
               }}
             >
               Create something like this
@@ -205,7 +169,7 @@ export default function Explore() {
         </div>
       )}
 
-      {/* ---------- ABOUT SECTION ---------- */}
+      {/* ABOUT SECTION */}
       <div
         style={{
           marginTop: 70,
@@ -240,8 +204,8 @@ export default function Explore() {
           }}
         >
           Imaginate is an experimental AI-powered concept engine.
-          You describe an idea — a product, a gadget, a vision — and
-          Imaginate transforms it into a visual concept.
+          You describe an idea — a product, a gadget, or a vision — and
+          Imaginate transforms it into visual interpretations.
         </p>
 
         <p
@@ -253,8 +217,7 @@ export default function Explore() {
             margin: "0 auto 18px",
           }}
         >
-          This is not about perfection.
-          It’s about <b>speed</b>, <b>clarity</b>, and unlocking imagination.
+          This is about <b>exploration</b>, <b>clarity</b>, and unlocking imagination.
         </p>
 
         <p
@@ -266,18 +229,6 @@ export default function Explore() {
           }}
         >
           Every concept you see here was imagined first — then visualized.
-        </p>
-
-        <p
-          style={{
-            fontSize: 15,
-            color: "#7fbad6",
-            maxWidth: 600,
-            margin: "0 auto",
-          }}
-        >
-          Imaginate is in early development.
-          Your ideas, feedback, and curiosity directly shape what it becomes next.
         </p>
       </div>
     </div>

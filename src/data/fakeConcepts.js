@@ -1,7 +1,6 @@
 export const fakeConcepts = [
   {
     id: "glove 1_01",
-    keyword: "impact glove",
     image: "/fake/futuristic/glove 1_01.png",
     video: "/fake/futuristic/videos/glove 1_01.mp4", 
     title: "Smart Impact Gloves",
@@ -15,7 +14,6 @@ export const fakeConcepts = [
   },
   {
     id: "Pulse core watch_01",
-    keyword: "ai smartwatch",
     image: "/fake/futuristic/Pulse core watch_01.png",
     video: "/fake/futuristic/videos/Pulse core watch_01.mp4",
     title: "Adaptive AI Watch",
@@ -29,7 +27,6 @@ export const fakeConcepts = [
   },
   {
     id: "goggle_01",
-    keyword: "smart goggles",
     image: "/fake/futuristic/goggle_01.png",
     video: "/fake/futuristic/videos/goggle_01.mp4",
     title: "Adaptive Smart Vision Glasses",
@@ -43,7 +40,6 @@ export const fakeConcepts = [
   },
   {
     id: "Dream recorder_01",
-    keyword: "dream recorder",
     image: "/fake/futuristic/Dream recorder_01.png",
     video: "/fake/futuristic/videos/Dream recorder_01.mp4",
     title: "AI Dream Recorder",
@@ -57,7 +53,6 @@ export const fakeConcepts = [
   },
   {
     id: "health watch_01",
-    keyword: "health smartwatch",
     image: "/fake/futuristic/health watch_01.png",
     video: "/fake/futuristic/videos/health watch_01.mp4",
     title: "AI Health insight Watch",
@@ -71,7 +66,6 @@ export const fakeConcepts = [
   },
   {
     id: "Chair adaptive_01",
-    keyword: "smart chair",
     image: "/fake/futuristic/Chair adaptive_01.png",
     video: "/fake/futuristic/videos/Chair adaptive_01.mp4",
     title: "Adaptive Smart Chair",
@@ -85,7 +79,6 @@ export const fakeConcepts = [
   },
   {
     id: "head stress vibrater_01",
-    keyword: "neuro headband",
     image: "/fake/futuristic/head stress vibrater_01.png",
     video: "/fake/futuristic/videos/head stress vibrater_01.mp4",
     title: "NeuroSync Headband",
@@ -99,7 +92,6 @@ export const fakeConcepts = [
   },
   {
     id: "safety alert device_01",
-    keyword: "child safety watch",
     image: "/fake/futuristic/safety alert device_01.png",
     video: "/fake/futuristic/videos/safety alert device_01.mp4",
     title: "SafeView Kids Watch",
@@ -107,13 +99,12 @@ export const fakeConcepts = [
     features: [
         "Real-time phone-to-eye distance detection",
         "Instant visual alerts when screen is too close",
-        "Child-friendly, lightweight smartwatch design",
+        "Child-friendly",
         "Parent-app insights & safety controls"
     ]
   },
   {
     id: "child alert signal_01",
-    keyword: "safety alert band",
     image: "/fake/futuristic/child alert signal_01.png",
     video: "/fake/futuristic/videos/child alert signal_01.mp4",
     title: "AlertBand Pro",
@@ -127,7 +118,6 @@ export const fakeConcepts = [
   },
   {
     id: "Shirt_01",
-    keyword: "smart Shirt",
     image: "/fake/futuristic/Shirt_01.png",
     video: "/fake/futuristic/videos/Shirt_01.mp4",
     title: "VitaSense Smart Tee",
@@ -141,7 +131,6 @@ export const fakeConcepts = [
   },
   {
     id: "Smart home climate_01",
-    keyword: "smart home climate",
     image: "/fake/futuristic/Smart home climate_01.png",
     video: "/fake/futuristic/videos/Smart home climate_01.mp4",
     title: "EcoSphere Smart Home",
@@ -155,7 +144,6 @@ export const fakeConcepts = [
   },
   {
     id: "relaxation pod_01",
-    keyword: "relaxation pod",
     image: "/fake/futuristic/relaxation pod_01.png",
     video: "/fake/futuristic/videos/relaxation pod_01.mp4",
     title: "NeuroRest Pod",
@@ -169,7 +157,6 @@ export const fakeConcepts = [
   },
   {
     id: "smart jacket_01",
-    keyword: "smart jacket",
     image: "/fake/futuristic/smart jacket_01.png",
     video: "/fake/futuristic/videos/smart jacket_01.mp4",
     title: "AeroPulse Smart Jacket",
@@ -183,7 +170,6 @@ export const fakeConcepts = [
   },
   {
     id: "levita sofa_01",
-    keyword: "smart sofa",
     image: "/fake/futuristic/levita sofa_01.png",
     video: "/fake/futuristic/videos/levita sofa_01.mp4",
     title: "NeuroLuxe Smart Sofa",
@@ -197,7 +183,6 @@ export const fakeConcepts = [
   },
   {
     id: "minimal product bottle_01",
-    keyword: "hydration bottle",
     image: "/fake/futuristic/minimal product bottle_01.png",
     video: "/fake/futuristic/videos/minimal product bottle_01.mp4",
     title: "Smart Expandable Hydration Bottle",
@@ -211,7 +196,6 @@ export const fakeConcepts = [
   },
   {
     id: "mind control tech_01",
-    keyword: "mind control device",
     image: "/fake/futuristic/mind control tech_01.png",
     video: "/fake/futuristic/videos/mind control tech_01.mp4",
     title: "NeuroLink Vision Band",
@@ -225,7 +209,6 @@ export const fakeConcepts = [
   },
   {
     id: "interactive smart class_01",
-    keyword: "smart classroom",
     image: "/fake/futuristic/interactive smart class_01.png",
     video: "/fake/futuristic/videos/interactive smart class_01.mp4",
     title: "EduSphere AI Smart Classroom",
@@ -240,7 +223,6 @@ export const fakeConcepts = [
   },
   {
     id: "kitchen kitholder_01",
-    keyword: "smart kitchen device",
     image: "/fake/futuristic/kitchen kitholder_01.png",
     video: "/fake/futuristic/videos/kitchen kitholder_01.mp4",
     title: "SmartChef Core",
@@ -254,7 +236,6 @@ export const fakeConcepts = [
   },
   {
     id: "construction site safety_01",
-    keyword: "construction safety system",
     image: "/fake/futuristic/construction site safety_01.png",
     video: "/fake/futuristic/videos/construction site safety_01.mp4",
     title: "SiteGuard Sentinel",
@@ -268,7 +249,6 @@ export const fakeConcepts = [
   },
   {
     id: "mind to design_01",
-    keyword: "mind to design",
     image: "/fake/futuristic/mind to design_01.png",
     video: "/fake/futuristic/videos/mind to design_01.mp4",
     title: "HoloDesign Pro",
@@ -283,7 +263,6 @@ export const fakeConcepts = [
   },
   {
     id: "electrical safety_01",
-    keyword: "electrical safety tester",
     image: "/fake/futuristic/electrical safety_01.png",
     video: "/fake/futuristic/videos/electrical safety_01.mp4",
     title: "VoltGuard Smart Tester",
@@ -297,7 +276,6 @@ export const fakeConcepts = [
   },
   {
     id: "glove 2_01",
-    keyword: "cleaning glove",
     image: "/fake/futuristic/glove 2_01.png",
     video: "/fake/futuristic/videos/glove 2_01.mp4",
     title: "CleanGrip Smart Glove",

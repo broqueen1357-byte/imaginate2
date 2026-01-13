@@ -1,0 +1,19 @@
+const handleSelectConcept = (concept) => {
+    // Save selected concept in session
+    sessionStorage.setItem(
+      "imaginate_selected_concept",
+      JSON.stringify(concept)
+    );
+    // Navigate to Loading → 3D Result flow
+    navigate("/imaginate/loading", {
+      state: { prompt: userPrompt, uploadedImage: concept.image, concept },
+    });
+  };
+
+  const handleGoBack = () => {
+    navigate("/imaginate"); // back to main input
+  };
+
+But based on your idea😉, you might like one of these😄
+
+We couldn't find a perfect match yet 🤔

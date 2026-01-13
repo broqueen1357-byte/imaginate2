@@ -1,3 +1,4 @@
+// src/pages/Home.jsx
 import { useNavigate } from "react-router-dom";
 
 export default function Home() {
@@ -20,8 +21,10 @@ export default function Home() {
       <div style={styles.content}>
         <h1 style={styles.title}>Welcome to Imaginate</h1>
 
-        <p style={styles.subtitle}>Explore visual interpretations of your ideas.</p>
-        <p style={styles.subtitle}>Imaginate helps you see possible visual directions for a concept not final AI outputs.</p>
+        <p style={styles.subtitle}>
+          Explore visual interpretations of your ideas — Imaginate shows possible
+          directions, not final outputs.
+        </p>
 
         <div style={styles.buttons}>
           <button
@@ -35,6 +38,8 @@ export default function Home() {
 
           <button
             style={styles.secondaryBtn}
+            onMouseDown={(e) => (e.target.style.transform = "scale(0.97)")}
+            onMouseUp={(e) => (e.target.style.transform = "scale(1)")}
             onClick={() => navigate("/")}
           >
             Back to Landing Page
@@ -42,6 +47,8 @@ export default function Home() {
 
           <button
             style={styles.logoutBtn}
+            onMouseDown={(e) => (e.target.style.transform = "scale(0.97)")}
+            onMouseUp={(e) => (e.target.style.transform = "scale(1)")}
             onClick={handleLogout}
           >
             Log Out
@@ -64,7 +71,6 @@ const styles = {
     overflow: "hidden",
     padding: "20px",
   },
-
   /* Floating bubbles */
   bubble1: {
     position: "absolute",
@@ -97,7 +103,6 @@ const styles = {
     borderRadius: "50%",
     filter: "blur(45px)",
   },
-
   content: {
     textAlign: "center",
     color: "white",
@@ -105,7 +110,6 @@ const styles = {
     maxWidth: "520px",
     width: "100%",
   },
-
   title: {
     fontSize: "clamp(28px, 6vw, 40px)",
     fontWeight: "800",
@@ -113,20 +117,17 @@ const styles = {
     color: "#b7d3ff",
     textShadow: "0 0 18px rgba(150,200,255,0.75)",
   },
-
   subtitle: {
     fontSize: "clamp(16px, 4.5vw, 25px)",
     opacity: 0.85,
     marginBottom: "18px",
   },
-
   buttons: {
     display: "flex",
     flexDirection: "column",
     gap: "14px",
     marginTop: "10px",
   },
-
   primaryBtn: {
     padding: "14px",
     fontSize: "clamp(16px, 4.5vw, 20px)",
@@ -140,7 +141,6 @@ const styles = {
     transition: "0.2s",
     width: "100%",
   },
-
   secondaryBtn: {
     padding: "14px",
     fontSize: "clamp(16px, 4.5vw, 20px)",
@@ -152,7 +152,6 @@ const styles = {
     transition: "0.2s",
     width: "100%",
   },
-
   logoutBtn: {
     padding: "14px",
     fontSize: "clamp(16px, 4.5vw, 20px)",

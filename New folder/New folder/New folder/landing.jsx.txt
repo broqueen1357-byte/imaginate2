@@ -1,0 +1,385 @@
+import { Link, useNavigate } from "react-router-dom";
+
+export default function Landing() {
+  const navigate = useNavigate();
+
+  return (
+    <div
+      style={{
+        width: "100%",
+        minHeight: "100vh",
+        background: "radial-gradient(circle at center, #050b18, #000)",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: "20px",
+        color: "white",
+        boxSizing: "border-box",
+      }}
+    >
+      {/* MAIN CARD */}
+      <div
+        style={{
+          width: "100%",
+          maxWidth: "900px",
+          padding: "clamp(22px, 5vw, 40px)",
+          borderRadius: "25px",
+          background: "rgba(0,0,0,0.35)",
+          border: "1px solid rgba(80,180,255,0.40)",
+          boxShadow: "0 0 25px rgba(0,150,255,0.45)",
+          textAlign: "center",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        {/* BACKGROUND IMAGE BLUR */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            backgroundImage: "url('/space.png')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            filter: "blur(3px)",
+            opacity: 0.9,
+            zIndex: 0,
+          }}
+        />
+
+        {/* CONTENT */}
+        <div style={{ position: "relative", zIndex: 1 }}>
+          {/* TITLE */}
+          <h1
+            style={{
+              fontSize: "clamp(42px, 9vw, 75px)",
+              fontWeight: "700",
+              marginBottom: "8px",
+              color: "#6ecbff",
+              textShadow: "0 0 10px #3db7ff",
+            }}
+          >
+            IMAGINATE
+          </h1>
+
+          {/* SUBTEXT */}
+          <p
+            style={{
+              fontSize: "clamp(20px, 5vw, 35px)",
+              marginBottom: "8px",
+              textShadow: "0 0 10px #000",
+            }}
+          >
+            Turn Ideas Into Visual Concepts
+          </p>
+
+          <p
+            style={{
+              fontSize: "clamp(16px, 4vw, 25px)",
+              marginBottom: "35px",
+              lineHeight: "1.5",
+              textShadow: "0 0 6px #000",
+              opacity: 0.95,
+            }}
+          >
+            Describe your idea — Imaginate transforms it into a clear visual
+            concept in seconds.
+          </p>
+          
+          <p
+            style={{
+              fontSize: "clamp(16px, 4vw, 25px)",
+              marginBottom: "35px",
+              lineHeight: "1.5",
+              textShadow: "0 0 6px #000",
+              opacity: 0.95,
+            }}
+          >
+            This is an early version. Your feedback helps shape the future.🤝
+          </p>
+
+          {/* CTA */}
+          <button
+            onClick={() => navigate("/imaginate")}
+            style={{
+              padding: "14px 42px",
+              fontSize: "18px",
+              fontWeight: "700",
+              borderRadius: "14px",
+              background: "linear-gradient(90deg, #009dff, #00d5ff)",
+              color: "black",
+              border: "none",
+              cursor: "pointer",
+              marginBottom: "45px",
+              boxShadow: "0 0 25px rgba(0,160,255,0.6)",
+              width: "min(100%, 260px)",
+            }}
+          >
+            Start Imaginating
+          </button>
+
+          {/* BOTTOM LINKS */}
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "center",
+              gap: "16px",
+            }}
+          >
+            {[
+              { to: "/about", label: "About" },
+              { to: "/explore", label: "Explore" },
+              { to: "/login", label: "Log In" },
+            ].map((item) => (
+              <Link
+                key={item.to}
+                to={item.to}
+                style={{
+                  padding: "10px 26px",
+                  borderRadius: "12px",
+                  background: "rgba(0,0,0,0.45)",
+                  border: "1px solid rgba(80,180,255,0.4)",
+                  color: "#6ecbff",
+                  fontSize: "16px",
+                  textDecoration: "none",
+                  boxShadow: "0 0 12px rgba(0,150,255,0.4)",
+                  minWidth: "110px",
+                  textAlign: "center",
+                }}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+
+
+
+
+
+// src/pages/Landing.jsx
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+
+export default function Landing() {
+  const navigate = useNavigate();
+  const isMobile = window.innerWidth <= 768;
+
+  return (
+    <div
+      style={{
+        width: "100%",
+        minHeight: "100vh",
+        background: "radial-gradient(circle at center, #050b18, #000)",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: isMobile ? 16 : 32,
+        color: "#e6f7ff",
+        fontFamily:
+          "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+        overflow: "hidden",
+        position: "relative",
+      }}
+    >
+      {/* ================= FLOATING BACKGROUND ELEMENTS ================= */}
+      {[...Array(6)].map((_, i) => (
+        <div
+          key={i}
+          style={{
+            position: "absolute",
+            width: 120,
+            height: 120,
+            borderRadius: "50%",
+            background:
+              "radial-gradient(circle, rgba(0,180,255,0.35), transparent)",
+            top: `${Math.random() * 80}%`,
+            left: `${Math.random() * 80}%`,
+            animation: `float ${18 + i * 3}s linear infinite`,
+            filter: "blur(6px)",
+            opacity: 0.5,
+          }}
+        />
+      ))}
+
+      {/* ================= MAIN CARD ================= */}
+      <div
+        style={{
+          width: "100%",
+          maxWidth: 920,
+          padding: isMobile ? 26 : 44,
+          borderRadius: 26,
+          background: "rgba(0,0,0,0.35)",
+          border: "1px solid rgba(80,180,255,0.35)",
+          boxShadow: "0 0 30px rgba(0,150,255,0.45)",
+          textAlign: "center",
+          position: "relative",
+          zIndex: 2,
+          backdropFilter: "blur(8px)",
+        }}
+      >
+        {/* ================= TITLE ================= */}
+        <h1
+          style={{
+            fontSize: isMobile ? 40 : 76,
+            fontWeight: 800,
+            margin: 0,
+            background: "linear-gradient(90deg,#4ecbff,#00aaff)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            animation: "pulseGlow 2.8s ease-in-out infinite",
+          }}
+        >
+          IMAGINATE
+        </h1>
+
+        {/* ================= SUBTITLE ================= */}
+        <p
+          style={{
+            fontSize: isMobile ? 18 : 30,
+            marginTop: 10,
+            color: "#9fe8ff",
+            textShadow: "0 0 10px rgba(0,0,0,0.6)",
+          }}
+        >
+          Turn Ideas Into Stunning 3D Concepts
+        </p>
+
+        {/* ================= MAIN DESCRIPTION ================= */}
+        <p
+          style={{
+            fontSize: isMobile ? 15 : 20,
+            maxWidth: 650,
+            margin: "22px auto",
+            lineHeight: 1.6,
+            color: "#d8f4ff",
+          }}
+        >
+          Describe your idea. Upload an image.  
+          <br />
+          <b>Imaginate</b> transforms your imagination into a clear,
+          futuristic visual concept in seconds.
+        </p>
+
+        {/* ================= VISION / TRUST TEXT ================= */}
+        <p
+          style={{
+            fontSize: isMobile ? 14 : 18,
+            maxWidth: 620,
+            margin: "0 auto 18px",
+            lineHeight: 1.5,
+            color: "#bff6ff",
+          }}
+        >
+          <b>Your vision shapes Imaginate.</b>  
+          This is an early version — every creation and every feedback helps
+          build the future of creativity. 🤝
+        </p>
+
+        {/* ================= TAGLINE ================= */}
+        <p
+          style={{
+            fontSize: isMobile ? 13 : 15,
+            fontStyle: "italic",
+            color: "#94cbe8",
+            marginBottom: 36,
+          }}
+        >
+          Fast. Visual. Intuitive.  
+          From imagination to visualization — one click, zero friction.
+        </p>
+
+        {/* ================= CTA BUTTONS ================= */}
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            gap: 18,
+          }}
+        >
+          {/* Start */}
+          <button
+            onClick={() => navigate("/imaginate")}
+            style={ctaStyle}
+            className="cta"
+          >
+            Start Imaginating
+          </button>
+
+          {/* Explore */}
+          <Link to="/explore" style={{ textDecoration: "none" }}>
+            <div style={secondaryCtaStyle} className="cta-secondary">
+              Explore
+            </div>
+          </Link>
+
+          {/* Login */}
+          <Link to="/login" style={{ textDecoration: "none" }}>
+            <div style={secondaryCtaStyle} className="cta-secondary">
+              Log In
+            </div>
+          </Link>
+        </div>
+      </div>
+
+      {/* ================= ANIMATIONS ================= */}
+      <style>{`
+        @keyframes pulseGlow {
+          0% { filter: drop-shadow(0 0 6px #4ecbff); }
+          50% { filter: drop-shadow(0 0 18px #00aaff); }
+          100% { filter: drop-shadow(0 0 6px #4ecbff); }
+        }
+
+        @keyframes float {
+          0% { transform: translateY(0); }
+          50% { transform: translateY(-40px); }
+          100% { transform: translateY(0); }
+        }
+
+        .cta:hover {
+          box-shadow: 0 0 35px rgba(0,190,255,0.9);
+          transform: translateY(-2px) scale(1.02);
+        }
+
+        .cta-secondary:hover {
+          box-shadow: 0 0 20px rgba(0,180,255,0.6);
+          transform: translateY(-2px);
+        }
+      `}</style>
+    </div>
+  );
+}
+
+/* ================= CTA STYLES ================= */
+
+const ctaStyle = {
+  padding: "14px 44px",
+  fontSize: 18,
+  fontWeight: 700,
+  borderRadius: 16,
+  background: "linear-gradient(90deg,#00aaff,#00e0ff)",
+  color: "#000",
+  border: "none",
+  cursor: "pointer",
+  boxShadow: "0 0 25px rgba(0,160,255,0.7)",
+  transition: "all 0.3s ease",
+};
+
+const secondaryCtaStyle = {
+  padding: "14px 36px",
+  fontSize: 16,
+  fontWeight: 600,
+  borderRadius: 14,
+  background: "rgba(0,0,0,0.45)",
+  border: "1px solid rgba(80,180,255,0.45)",
+  color: "#6ecbff",
+  boxShadow: "0 0 14px rgba(0,150,255,0.4)",
+  transition: "all 0.3s ease",
+};

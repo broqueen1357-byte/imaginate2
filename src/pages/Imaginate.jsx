@@ -1,7 +1,7 @@
 // src/pages/Imaginate.jsx
+
 import { useState } from "react";
 import { Link, useNavigate, Outlet, useLocation } from "react-router-dom";
-import { fakeConcepts } from "../data/fakeConcepts";
 
 export default function Imaginate() {
   const [prompt, setPrompt] = useState("");
@@ -12,40 +12,34 @@ export default function Imaginate() {
   const isMobile = window.innerWidth <= 768;
 
   // GENERATE
-const handleGenerate = () => {
-  if (! imaginationType) { 
-    alert("select what you are imagining first");
-  }
-  const prompt = document.getElementById("ideaInput").value.trim();
+  const handleGenerate = () => {
+    if (!imaginationType) {
+      alert("Select what you are imagining first");
+      return;
+    }
 
-  if (!prompt.trim()) {
-    alert("Describe your imagination first");
-    return;
-  }
+    const promptValue = document.getElementById("ideaInput").value.trim();
+    if (!promptValue) {
+      alert("Describe your imagination first");
+      return;
+    }
 
-  // 🔥 CLEAR OLD STATE
-  sessionStorage.removeItem("imaginate_fallback_concepts");
-  sessionStorage.removeItem("imaginate_selected_concept");
+    // 🔥 CLEAR OLD STATE
+    sessionStorage.removeItem("imaginate_selected_concept");
 
-  const matchedConcept = fakeConcepts.find((c) =>
-    prompt.toLowerCase().includes(c.keyword.toLowerCase())
-  );
+    // store generation
+    sessionStorage.setItem(
+      "imaginate_generation",
+      JSON.stringify({
+        prompt: promptValue,
+        imaginationType,
+        concept: null, // no matching
+      })
+    );
 
-  sessionStorage.setItem(
-    "imaginate_generation",
-    JSON.stringify({
-      prompt,
-      concept: matchedConcept || null,
-      imaginationType,
-    })
-  );
-
-  if (matchedConcept) {
-    navigate("/imaginate/loading");
-  } else {
+    // Always go to ConceptFallback
     navigate("/imaginate/concept-fallback");
-  }
-};
+  };
 
   return (
     <div
@@ -97,32 +91,38 @@ const handleGenerate = () => {
             IMAGINATE
           </h1>
 
+          {/* PROMPT CARD */}
           <div
-           style={{
-           maxWidth: "800px",
-           margin: "20px auto 40px",
-           padding: "18px 22px",
-           borderRadius: "16px",
-           background: "rgba(0,0,0,0.3)",
-           border: "1px solid rgba(120,180,255,0.35)",
-           textAlign: "center",
-          }}
+            style={{
+              maxWidth: "800px",
+              margin: "20px auto 40px",
+              padding: "18px 22px",
+              borderRadius: "16px",
+              background: "rgba(0,0,0,0.3)",
+              border: "1px solid rgba(120,180,255,0.35)",
+              textAlign: "center",
+            }}
           >
-          <p
-           style={{
-           fontSize: isMobile ? "18px" : "20px",
-           lineHeight: "1.6",
-           color: "#cfe8ff",
-           margin: 0,
-          }}
-          >
-          <strong>Imaginate starts in your mind.</strong><br />
-           Describe a single idea you are imagining.
-           We explore how it could look — not generate final images.
-          </p>
+            <p
+              style={{
+                fontSize: isMobile ? "18px" : "20px",
+                lineHeight: "1.6",
+                color: "#cfe8ff",
+                margin: 0,
+              }}
+            >
+              <strong>Imaginate starts in your mind.</strong>
+              <br />
+              Describe a single idea you are imagining.
+              <br />
+              <strong>
+                Imaginate explores visual interpretations — not final product
+                designs.
+              </strong>
+            </p>
           </div>
 
-          {/* CARD */}
+          {/* INPUT */}
           <div
             style={{
               width: "100%",
@@ -146,10 +146,9 @@ const handleGenerate = () => {
               Describe what you are imagining
             </h2>
 
-
             <input
               value={prompt}
-              onChange={(e) => setPrompt(e. target. value)}
+              onChange={(e) => setPrompt(e.target.value)}
               id="ideaInput"
               type="text"
               placeholder="Ex: A city where buildings grow like trees and adapt to people…"
@@ -164,80 +163,87 @@ const handleGenerate = () => {
                 outline: "none",
               }}
             />
+
+            {/* Imagination Type */}
             <p style={{ marginBottom: "10px", color: "#a8b8ff", fontSize: "25px" }}>
               What are you imagining?
             </p>
-
             <div style={{ display: "flex", gap: "10px", marginBottom: "25px" }}>
               {["Product", "Concept", "Visual idea"].map((type) => (
-            <button
-             key={type}
-             onClick={() => setImaginationType(type)}
-             style={{
-             padding: "10px 18px",
-             borderRadius: "20px",
-             border:
-             imaginationType === type
-             ? "1px solid #6ecbff"
-             : "1px solid rgba(255,255,255,0.25)",
-             background:
-             imaginationType === type ? "#6ecbff" : "transparent",
-             color: imaginationType === type ? "#000" : "#fff",
-             cursor: "pointer",
-             fontWeight: 600,
-            }}
-            >
-           {type}
-          </button>
-        ))}
-        </div>
-
-            {/* GRID */}
-            <div
-              style={{
-                width: "100%",
-                display: "grid",
-                gridTemplateColumns: isMobile
-                  ? "1fr"
-                  : "repeat(auto-fit, minmax(300px, 1fr))",
-                gap: "25px",
-              }}
-            >
-
-              {/* TIPS */}
-              <div
-                style={{
-                  padding: "20px",
-                  borderRadius: "18px",
-                  background: "rgba(0,0,0,0.25)",
-                  border: "1px solid rgba(80,180,255,0.35)",
-                }}
-              >
-                <h3
+                <button
+                  key={type}
+                  onClick={() => setImaginationType(type)}
                   style={{
-                    fontSize: isMobile ? "22px" : "30px",
-                    color: "#9dd7ff",
-                    marginBottom: "10px",
+                    padding: "10px 18px",
+                    borderRadius: "20px",
+                    border:
+                      imaginationType === type
+                        ? "1px solid #6ecbff"
+                        : "1px solid rgba(255,255,255,0.25)",
+                    background: imaginationType === type ? "#6ecbff" : "transparent",
+                    color: imaginationType === type ? "#000" : "#fff",
+                    cursor: "pointer",
+                    fontWeight: 600,
                   }}
                 >
-                  Tips for clearer explorations
-                </h3>
-                <p
-                  style={{
-                    fontSize: isMobile ? "16px" : "22px",
-                    lineHeight: "1.6",
-                  }}
-                >
-                  Be as descriptive as possible.
-                  <br />
-                  More details → better results.
-                </p>
-              </div>
+                  {type}
+                </button>
+              ))}
             </div>
 
+            <p
+              style={{
+                marginBottom: "1px",
+                fontSize: "19px",
+                opacity: 0.7,
+              }}
+            >
+              This will generate an interpretation — not a finished design.
+            </p>
+            <div
+  style={{
+    marginTop: 20,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  }}
+>
+  {/* Title */}
+  <div
+    style={{
+      fontSize: 19,
+      fontWeight: 700,
+      marginBottom: 10,
+      opacity: 0.85,
+    }}
+  >
+    What happens next
+  </div>
+
+  {/* Bullet list */}
+  <ul
+    style={{
+      listStyleType: "disc",
+      paddingLeft: 20,
+      margin: 0,
+      textAlign: "left",
+      fontSize: 19,
+      opacity: 0.75,
+      lineHeight: 1.6,
+      maxWidth: 420,
+    }}
+  >
+    <li>Imaginate interprets your idea through a creative lens</li>
+    <li>You explore a few possible directions</li>
+    <li>You choose what resonates most</li>
+  </ul>
+</div>
+
+
+            {/* Handle Generate Button */}
             <button
               onClick={handleGenerate}
-              disabled={! imaginationType}
+              disabled={!imaginationType}
               style={{
                 width: "100%",
                 marginTop: "35px",
@@ -254,16 +260,6 @@ const handleGenerate = () => {
             >
               Interpret my imagination
             </button>
-            <p
-             style={{
-             marginTop: "8px",
-             fontSize: "19px",
-             opacity: 0.7,
-             textAlign: "center",
-             }}
-            >
-              Best results come from clear, single-idea descriptions.
-            </p>
           </div>
         </>
       )}

@@ -1,6 +1,41 @@
-import React from "react";
+// src/pages/Landing.jsx
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "../supabase/supabaseClient";
 
 export default function Landing() {
+  const navigate = useNavigate();
+
+  // generate anonymous session id once
+  useEffect(() => {
+    let sid = sessionStorage.getItem("imaginate_sid");
+    if (!sid) {
+      sid = crypto.randomUUID();
+      sessionStorage.setItem("imaginate_sid", sid);
+    }
+  }, []);
+
+  const handleStartImaginating = async () => {
+    const session_id = sessionStorage.getItem("imaginate_sid");
+
+    // fire anonymous event
+    try {
+      await supabase.from("events").insert([
+        {
+          event_name: "start_imaginating",
+          session_id,
+          referrer: document.referrer || "direct",
+          user_agent: navigator.userAgent,
+        },
+      ]);
+    } catch (err) {
+      console.error("tracking failed", err);
+    }
+
+    // go straight to product
+    navigate("/imaginate");
+  };
+
   return (
     <div
       style={{
@@ -61,44 +96,33 @@ export default function Landing() {
           }}
         >
           {[
-            { text: "Start Imaginating", href: "/imaginate", primary: true },
+            { text: "Start Imaginating", action: handleStartImaginating, primary: true },
             { text: "Explore Concepts", href: "/explore", secondary: true },
-            { text: "Login", href: "/login", small: true },
           ].map((btn, idx) => (
             <button
               key={btn.text}
               className="glow-button bounce-in fade-in"
-              onClick={() => (window.location.href = btn.href)}
+              onClick={() =>
+                btn.action ? btn.action() : (window.location.href = btn.href)
+              }
               style={{
-                padding: btn.small
-                  ? "12px 20px"
-                  : btn.primary
-                  ? "14px 28px"
-                  : "14px 26px",
-                fontSize: btn.small ? 14 : btn.primary ? 16 : 15,
+                padding: btn.primary ? "14px 28px" : "14px 26px",
+                fontSize: btn.primary ? 16 : 15,
                 fontWeight: btn.primary ? 700 : 600,
                 color: btn.primary
                   ? "#001018"
-                  : btn.secondary
-                  ? "#9fe8ff"
-                  : "#bcdff0",
+                  : "#9fe8ff",
                 background: btn.primary
                   ? "linear-gradient(90deg,#4ecbff,#00aaff)"
-                  : btn.secondary
-                  ? "rgba(78,203,255,0.1)"
-                  : "transparent",
+                  : "rgba(78,203,255,0.1)",
                 border: btn.primary
                   ? "none"
-                  : btn.secondary
-                  ? "1px solid rgba(78,203,255,0.5)"
-                  : "none",
+                  : "1px solid rgba(78,203,255,0.5)",
                 borderRadius: 12,
                 cursor: "pointer",
                 boxShadow: btn.primary
                   ? "0 10px 25px rgba(78,203,255,0.35)"
-                  : btn.secondary
-                  ? "0 6px 15px rgba(78,203,255,0.2)"
-                  : "0 6px 15px rgba(78,203,255,0.15)",
+                  : "0 6px 15px rgba(78,203,255,0.2)",
                 transition: "all 0.25s ease",
                 position: "relative",
                 overflow: "hidden",

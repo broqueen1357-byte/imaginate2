@@ -5,7 +5,6 @@ import Landing from "./pages/Landing";
 import Explore from "./pages/Explore";
 import About from "./pages/About";
 import Imaginate from "./pages/Imaginate";
-import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 
 import ThreeDResult from "./pages/imaginate/ThreeDResult";
@@ -13,41 +12,30 @@ import FeedBack from "./pages/imaginate/FeedBack";
 import Loading from "./pages/imaginate/Loading";
 import FinalSummary from "./pages/FinalSummary";
 
-import ProtectedRoute from "./components/ProtectedRoute";
-import PublicRoute from "./components/PublicRoute";
-
-import Home from "./pages/Home";   // ⭐ Make sure this exists
+import Home from "./pages/Home";
 
 import FinalShowcase from "./pages/imaginate/FinalShowcase";
 import SavedImaginate from "./pages/imaginate/SavedImaginate";
 
-
 // ADMIN
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminRoute from "./components/AdminRoute";
-import VideoPreview from "./pages/imaginate/VideoPreview";
 import ConceptFallback from "./pages/imaginate/ConceptFallback";
+import VideoPreview from "./pages/imaginate/VideoPreview";
+
+// ✅ KEEP PROTECTED
+import ProtectedRoute from "./components/ProtectedRoute";
 
 export default function App() {
   return (
     <Router>
       <Routes>
-
         {/* ⭐ PUBLIC ROUTES */}
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Landing />} />
           <Route path="explore" element={<Explore />} />
           <Route path="about" element={<About />} />
         </Route>
-
-        <Route
-          path="/login"
-          element={
-            <PublicRoute>
-              <Login />
-            </PublicRoute>
-          }
-        />
 
         {/* ⭐ USER HOME (AFTER LOGIN) */}
         <Route
@@ -59,17 +47,12 @@ export default function App() {
           }
         />
 
-        {/* ⭐ IMAGINATE FLOW (PROTECTED) */}
-        <Route
-          path="/imaginate"
-          element={
-            <ProtectedRoute>
-              <Imaginate />
-            </ProtectedRoute>
-          }
-        >
-          <Route path="concept-fallback" element={<ConceptFallback
-          userPrompt={location.state?.prompt} />} />
+        {/* ⭐ IMAGINATE FLOW (NOW PUBLIC) */}
+        <Route path="/imaginate" element={<Imaginate />}>
+          <Route
+            path="concept-fallback"
+            element={<ConceptFallback userPrompt={location.state?.prompt} />}
+          />
           <Route path="loading" element={<Loading />} />
           <Route path="3d-result" element={<ThreeDResult />} />
           <Route path="summary" element={<FinalSummary />} />
@@ -91,7 +74,6 @@ export default function App() {
 
         {/* 404 */}
         <Route path="*" element={<NotFound />} />
-
       </Routes>
     </Router>
   );

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { interpretationModes } from "../../data/interpretationModes";
+import { supabase } from "../../supabase/supabaseClient";
 
 export default function FinalShowcase() {
   const navigate = useNavigate();
@@ -31,13 +32,32 @@ export default function FinalShowcase() {
   const mode = interpretationModes[generation.interpretationMode];
   const userPrompt = generation.prompt || "Your idea";
 
-  const handleSendClarity = () => {
-    if (!clarityText.trim()) return;
+  const handleSendClarity = async () => {
+  if (!clarityText.trim()) return;
 
-    // 🔒 For now we just acknowledge.
-    // Later this can go to Supabase / email / Notion.
+  const session_id = sessionStorage.getItem("imaginate_sid");
+
+  try {
+    const { error } = await supabase.from("clarity_feedback").insert([
+      {
+        session_id,
+        interpretation_mode: generation.interpretationMode,
+        user_prompt: userPrompt,
+        concept_title: conceptData.title || null,
+        clarity_text: clarityText,
+      },
+    ]);
+
+    if (error) {
+      console.error("clarity insert failed", error);
+      return;
+    }
+
     setClaritySent(true);
-  };
+  } catch (err) {
+    console.error("clarity insert crashed", err);
+  }
+};
 
   return (
     <div style={styles.page}>

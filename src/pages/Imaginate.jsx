@@ -164,6 +164,56 @@ export default function Imaginate() {
               }}
             />
 
+            
+            {/* Example Ideas */}
+            <div style={{ marginBottom: "25px", textAlign: "left" }}>
+            <p
+             style={{
+             fontSize: "18px",
+             marginBottom: "10px",
+             color: "#9fd3ff",
+             fontWeight: 600,
+            }}
+            >
+             Example ideas you can try:
+            </p>
+
+            {[
+              "A wearable device that reacts to human emotions",
+              "A city where buildings adapt to people’s behavior",
+              "A personal space that feels calm and alive",
+              "A system that connects strangers through shared moments",
+            ].map((idea, index) => (
+            <div
+             key={index}
+             onClick={() => {
+              setPrompt(idea);
+              const input = document.getElementById("ideaInput");
+              if (input) input.focus();
+            }}
+             style={{
+              padding: "10px 14px",
+              marginBottom: "8px",
+              borderRadius: "12px",
+              cursor: "pointer",
+              background: "rgba(80,180,255,0.12)",
+              border: "1px solid rgba(120,180,255,0.35)",
+              color: "#e6f4ff",
+              transition: "all 0.2s ease",
+             }}
+              onMouseEnter={(e) =>
+              (e.currentTarget.style.background =
+               "rgba(120,200,255,0.25)")
+              }
+              onMouseLeave={(e) =>
+              (e.currentTarget.style.background =
+               "rgba(80,180,255,0.12)")
+              }
+            >
+           {idea}
+          </div>
+         ))}
+          </div>
             {/* Imagination Type */}
             <p style={{ marginBottom: "10px", color: "#a8b8ff", fontSize: "25px" }}>
               What are you imagining?
@@ -201,43 +251,43 @@ export default function Imaginate() {
               This will generate an interpretation — not a finished design.
             </p>
             <div
-  style={{
-    marginTop: 20,
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  }}
->
-  {/* Title */}
-  <div
-    style={{
-      fontSize: 19,
-      fontWeight: 700,
-      marginBottom: 10,
-      opacity: 0.85,
-    }}
-  >
-    What happens next
-  </div>
+             style={{
+              marginTop: 20,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+            >
+            {/* Title */}
+            <div
+             style={{
+              fontSize: 19,
+              fontWeight: 700,
+              marginBottom: 10,
+              opacity: 0.85,
+            }}
+            >
+              What happens next
+            </div>
 
-  {/* Bullet list */}
-  <ul
-    style={{
-      listStyleType: "disc",
-      paddingLeft: 20,
-      margin: 0,
-      textAlign: "left",
-      fontSize: 19,
-      opacity: 0.75,
-      lineHeight: 1.6,
-      maxWidth: 420,
-    }}
-  >
-    <li>Imaginate interprets your idea through a creative lens</li>
-    <li>You explore a few possible directions</li>
-    <li>You choose what resonates most</li>
-  </ul>
-</div>
+            {/* Bullet list */}
+            <ul
+             style={{
+              listStyleType: "disc",
+              paddingLeft: 20,
+              margin: 0,
+              textAlign: "left",
+              fontSize: 19,
+              opacity: 0.75,
+              lineHeight: 1.6,
+              maxWidth: 420,
+            }}
+            >
+             <li>Imaginate interprets your idea through a creative lens</li>
+             <li>You explore a few possible directions</li>
+             <li>You choose what resonates most</li>
+            </ul>
+            </div>
 
 
             {/* Handle Generate Button */}

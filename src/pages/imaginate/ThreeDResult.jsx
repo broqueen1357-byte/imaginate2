@@ -4,6 +4,33 @@ import { useNavigate } from "react-router-dom";
 import { interpretationModes } from "../../data/interpretationModes";
 import { interpretationConcepts } from "../../data/interpretationConcepts";
 
+function explainPrompt(prompt) {
+if (!prompt) return "";
+
+const text = prompt.toLowerCase();
+
+if (text.includes("wearable") || text.includes("device") || text.includes("product")) {
+if (text.includes("emotion") || text.includes("feeling")) {
+return "This idea explores a wearable product designed to sense or respond to human emotions, focusing on how emotional feedback can shape interaction, behavior, or form.";
+}
+return "This idea focuses on a physical product or device, exploring how form, function, and interaction come together to express the core concept.";
+}
+
+if (text.includes("city") || text.includes("space") || text.includes("environment")) {
+return "This idea imagines a spatial or environmental concept, exploring how surroundings, structure, or atmosphere adapt to people and influence experience.";
+}
+
+if (text.includes("system") || text.includes("network") || text.includes("connect")) {
+return "This idea focuses on a connected system, where multiple elements interact with each other to create a shared experience or outcome.";
+}
+
+if (text.includes("emotion") || text.includes("feeling") || text.includes("mood")) {
+return "This idea explores emotional or symbolic meaning, focusing on how feelings can be expressed through visual form, interaction, or atmosphere.";
+}
+
+return "This idea explores a conceptual direction based on the user’s imagination, focusing on experience, interaction, and visual interpretation rather than a final design.";
+}
+
 export default function ThreeDResult() {
   const navigate = useNavigate();
   const isMobile = window.innerWidth <= 768;
@@ -20,6 +47,7 @@ export default function ThreeDResult() {
   const mode = interpretationModes[generation.interpretationMode];
   const concepts = interpretationConcepts[generation.interpretationMode] || [];
   const userPrompt = generation?.prompt || "Your idea";
+  const promptExplanation = explainPrompt(userPrompt);
 
   const handleModify = () => navigate("/imaginate");
   const handleExplore = () => {
@@ -49,10 +77,41 @@ export default function ThreeDResult() {
           <h1 style={{ fontSize: isMobile ? "34px" : "64px", fontWeight: 900, marginBottom: 10 }}>{mode?.title}</h1>
           <p style={{ fontSize: isMobile ? "18px" : "22px", opacity: 0.85, maxWidth: 520, marginBottom: 24 }}>{mode?.resultLabel}</p>
 
-          <div style={{ background: "rgba(255,255,255,0.05)", padding: 16, borderRadius: 12, marginBottom: 28 }}>
+          <div style={{ background: "rgba(255,255,255,0.05)", fontSize: 18, padding: 16, borderRadius: 12, marginBottom: 28 }}>
             <strong>Your idea</strong>
             <p style={{ marginTop: 8 }}>{userPrompt}</p>
           </div>
+
+        
+        {/* IMAGINATE UNDERSTANDING */}
+        <div
+         style={{
+          background: "rgba(120,180,255,0.08)",
+          padding: "18px",
+          borderRadius: "14px",
+          marginBottom: "28px",
+          border: "1px solid rgba(120,180,255,0.25)",
+        }}
+        >
+        <strong style={{ color: "#9fe8ff", fontSize: 16 }}>
+          How Imaginate understands your idea
+        </strong>
+
+        <p
+         style={{
+          marginTop: 10,
+          fontSize: 19,
+          lineHeight: 1.6,
+          opacity: 0.85,
+        }}
+        >
+        {promptExplanation}
+        </p>
+        </div>
+
+        <strong style={{ color: "#9fe8ff", fontSize: 19 }}>
+          This interpretation helps align your intent before visualization.
+        </strong>
 
           {/* CONCEPTS */}
           {concepts.length > 0 && (

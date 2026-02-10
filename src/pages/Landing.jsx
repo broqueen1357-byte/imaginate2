@@ -139,7 +139,7 @@ export default function Landing() {
           className="fade-in"
           style={{
             marginTop: 28,
-            fontSize: 13,
+            fontSize: 16,
             opacity: 0.55,
             animationDelay: "1.4s",
           }}

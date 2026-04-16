@@ -114,7 +114,7 @@ export default function FinalShowcase() {
             onClick={() => setShowClarity(true)}
             style={styles.clarityBtn}
           >
-            Something unclear?👈
+            [Something unclear?]👈
           </button>
         </div>
       </div>
